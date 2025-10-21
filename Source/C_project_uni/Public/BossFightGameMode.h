@@ -10,4 +10,5 @@ UCLASS()
 class C_PROJECT_UNI_API ABossFightGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
+	ABossFightGameMode();
 };

@@ -2,3 +2,8 @@
 
 
 #include "BossFightGameMode.h"
+
+ABossFightGameMode::ABossFightGameMode()
+{
+	
+}

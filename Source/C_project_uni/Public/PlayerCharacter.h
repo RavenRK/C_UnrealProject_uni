@@ -28,8 +28,19 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	//UPROPERTY(EditDefaultsOnly)
+	//TObjectPtr<USpringArmComponent> SpringArmComponent;
+
+	//UPROPERTY(EditDefaultsOnly)
+	//TObjectPtr<UCameraComponent> CameraComponent;
+	
 public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+
+	UFUNCTION(BlueprintCallable)
+	void PlayerMovement(FVector2D InputValue);
+
+private:
+	FVector2D LastInputValue;
 };
