@@ -13,10 +13,5 @@ void AMyPlayerContoller::BeginPlay()
 void AMyPlayerContoller::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-
-	if (UEnhancedInputWorldSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputWorldSubsystem>(GetLocalPlayer()))
-	{
-		Subsystem->AddMappingContext(MappingContext, 0);
-		
-	}
+	
 }
