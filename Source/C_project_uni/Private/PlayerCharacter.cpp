@@ -3,11 +3,19 @@
 
 #include "PlayerCharacter.h"
 
+#include "Camera/CameraComponent.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 
 APlayerCharacter::APlayerCharacter()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	SpringArmComponent = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
+	SpringArmComponent->SetupAttachment((RootComponent));
+
+	CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	CameraComponent->SetupAttachment(SpringArmComponent);
 }
 
 void APlayerCharacter::BeginPlay()
@@ -26,14 +34,4 @@ void APlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-void APlayerCharacter::PlayerMovement(FVector2D InputValue)
-{
-	LastInputValue.X = InputValue.X;
-	LastInputValue.Y = InputValue.Y;
-
-	FRotator MovementDirection = FRotator(0, GetControlRotation().Yaw, GetControlRotation().Roll);
-	GetMovementComponent()->AddInputVector(MovementDirection.RotateVector(FVector::ForwardVector) * InputValue.X);
-	GetMovementComponent()->AddInputVector(MovementDirection.RotateVector(FVector::ForwardVector) * InputValue.Y);
-
-}
 

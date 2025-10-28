@@ -4,20 +4,52 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "InputMappingContext.h"
 #include "MyPlayerContoller.generated.h"
 
-UCLASS()
+struct FInputActionValue;
+class APlayerCharacter;
+class UInputAction;
+class UEnhancedInputComponent;
+class UInputMappingContext;
+class UEnhancedInputLocalPlayerSubsystem;
+
+UCLASS(Abstract) //you can’t instantiate it directly (in C++ or Blueprint)
 class C_PROJECT_UNI_API AMyPlayerContoller : public APlayerController
 {
 	GENERATED_BODY()
-
-protected:
-	virtual void BeginPlay() override;
-
-	virtual void SetupInputComponent() override;
-
 public:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	TObjectPtr<UInputMappingContext> MappingContext;
+	TObjectPtr<UInputMappingContext> MappingContext = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
+	UInputAction* MoveAction = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
+	UInputAction* AttackAction = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
+	UInputAction* DogeAction = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
+	UInputAction* LookAction = nullptr;
+	
+protected:
+	virtual void BeginPlay() override;
+	virtual void SetupInputComponent() override;
+	
+	// for more info (const FInputActionInstance& InputActionInstance
+	void HandleMove(const FInputActionValue& InputActionValue);
+	void HandleLook(const FInputActionValue& InputActionValue);
+	void HandleDoge();
+	void HandleAttack();
+	
+	virtual void OnPossess(APawn* APawn) override;
+	//virtual void OnUnPossess() override;
+private:
+	UPROPERTY()
+	UEnhancedInputComponent* EnhancedInputComponent = nullptr;
+	UPROPERTY()
+	APlayerCharacter* PlayerCharacter = nullptr;
+	UPROPERTY()
+	UEnhancedInputLocalPlayerSubsystem* InputSubsystem;
  };
