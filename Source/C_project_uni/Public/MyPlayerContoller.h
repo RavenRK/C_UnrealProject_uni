@@ -30,20 +30,16 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
 	UInputAction* DogeAction = nullptr;
 
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
-	UInputAction* LookAction = nullptr;
-	
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
 	
 	// for more info (const FInputActionInstance& InputActionInstance
 	void HandleMove(const FInputActionValue& InputActionValue);
-	void HandleLook(const FInputActionValue& InputActionValue);
 	void HandleDoge();
 	void HandleAttack();
 	
-	virtual void OnPossess(APawn* APawn) override;
+	virtual void OnPossess(APawn* InPawn) override;
 	//virtual void OnUnPossess() override;
 private:
 	UPROPERTY()

@@ -3,7 +3,8 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "MyCustomCharacter.h"
+#include "GameFramework/Character.h"
+
 #include "PlayerCharacter.generated.h"
 
 class UCameraComponent;
@@ -19,24 +20,26 @@ enum EMyEnum : uint8
 };
 
 UCLASS()
-class C_PROJECT_UNI_API APlayerCharacter : public AMyCustomCharacter
+class C_PROJECT_UNI_API APlayerCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
 public:
 	APlayerCharacter();
-	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-
-protected:
-	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<USpringArmComponent> SpringArmComponent;
 
 	UPROPERTY(EditDefaultsOnly)
 	TObjectPtr<UCameraComponent> CameraComponent;
+
+	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+protected:
+	virtual void BeginPlay() override;
+
 private:
 	
+
 };

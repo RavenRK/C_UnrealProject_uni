@@ -11,49 +11,66 @@
 void AMyPlayerContoller::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
 void AMyPlayerContoller::SetupInputComponent()
 {
 	Super::SetupInputComponent();
 	
-}
-
-void AMyPlayerContoller::OnPossess(APawn* APawn)
-{
-	Super::OnPossess(APawn);
-
-	PlayerCharacter = Cast<APlayerCharacter>(APawn);
 	EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
 	InputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+}
+
+void AMyPlayerContoller::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	PlayerCharacter = Cast<APlayerCharacter>(InPawn);
 	
-	if (MoveAction && AttackAction && DogeAction && LookAction)
+	InputSubsystem->AddMappingContext(MappingContext, 0);
+	bShowMouseCursor = true;
+	if (MoveAction && AttackAction && DogeAction)
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered,this,&AMyPlayerContoller::HandleMove);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this,&AMyPlayerContoller::HandleAttack);
 		EnhancedInputComponent->BindAction(DogeAction, ETriggerEvent::Triggered, this,&AMyPlayerContoller::HandleDoge);
-		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this,&AMyPlayerContoller::HandleLook);
+	}
+	else
+	{
+		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, TEXT("1_Error"));
 	}
 }
 
 void AMyPlayerContoller::HandleMove(const FInputActionValue& InputActionValue)
 {
 	const FVector2D MovementVector = InputActionValue.Get<FVector2D>();
-	
-}
 
-void AMyPlayerContoller::HandleLook(const FInputActionValue& InputActionValue)
-{
-	const FVector2D LookAxisVector = InputActionValue.Get<FVector2D>();
-	
+	if (PlayerCharacter)
+	{
+		PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorForwardVector(),MovementVector.Y);
+		PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorRightVector(),MovementVector.X);
+	}
 }
 
 void AMyPlayerContoller::HandleDoge()
 {
-	
+	FVector forwardVector = PlayerCharacter->GetActorForwardVector();
+
+	if ( GEngine)
+	{
+		FString Msg = FString::Printf(TEXT("doge: X=%f, Y=%f"), forwardVector.X, forwardVector.Y);
+		GEngine->AddOnScreenDebugMessage(3, 5.f, FColor::Green, Msg);
+	}
+
 }
 
 void AMyPlayerContoller::HandleAttack()
 {
-	
+	FVector forwardVector = PlayerCharacter->GetActorForwardVector();
+
+	if ( GEngine)
+	{
+		FString Msg = FString::Printf(TEXT("attack: X=%f, Y=%f"), forwardVector.X, forwardVector.Y);
+		GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Green, Msg);
+	}
 }
