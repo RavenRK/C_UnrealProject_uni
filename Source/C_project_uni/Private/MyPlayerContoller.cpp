@@ -7,6 +7,7 @@
 #include "InputMappingContext.h"
 #include "EnhancedInputSubsystems.h"
 #include "PlayerCharacter.h"
+#include "GameFramework/PawnMovementComponent.h"
 
 void AMyPlayerContoller::BeginPlay()
 {
@@ -20,6 +21,7 @@ void AMyPlayerContoller::SetupInputComponent()
 	
 	EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent);
 	InputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+	InputSubsystem->AddMappingContext(MappingContext, 0);
 }
 
 void AMyPlayerContoller::OnPossess(APawn* InPawn)
@@ -27,7 +29,6 @@ void AMyPlayerContoller::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 	PlayerCharacter = Cast<APlayerCharacter>(InPawn);
 	
-	InputSubsystem->AddMappingContext(MappingContext, 0);
 	bShowMouseCursor = true;
 	if (MoveAction && AttackAction && DogeAction)
 	{
@@ -35,21 +36,15 @@ void AMyPlayerContoller::OnPossess(APawn* InPawn)
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this,&AMyPlayerContoller::HandleAttack);
 		EnhancedInputComponent->BindAction(DogeAction, ETriggerEvent::Triggered, this,&AMyPlayerContoller::HandleDoge);
 	}
-	else
-	{
-		GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, TEXT("1_Error"));
-	}
 }
 
 void AMyPlayerContoller::HandleMove(const FInputActionValue& InputActionValue)
 {
-	const FVector2D MovementVector = InputActionValue.Get<FVector2D>();
+	MovementVector = InputActionValue.Get<FVector2D>();
+	PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorForwardVector(),MovementVector.Y);
+	PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorRightVector(),MovementVector.X);
 
-	if (PlayerCharacter)
-	{
-		PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorForwardVector(),MovementVector.Y);
-		PlayerCharacter->AddMovementInput(PlayerCharacter->GetActorRightVector(),MovementVector.X);
-	}
+	
 }
 
 void AMyPlayerContoller::HandleDoge()

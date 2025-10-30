@@ -7,6 +7,7 @@
 
 #include "PlayerCharacter.generated.h"
 
+class AMyPlayerContoller;
 class UCameraComponent;
 class USpringArmComponent;
 
@@ -36,10 +37,17 @@ public:
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY()
+	TObjectPtr<AMyPlayerContoller> My_PController_Ref = nullptr;
 protected:
 	virtual void BeginPlay() override;
 
-private:
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Aim")
+	TEnumAsByte<ETraceTypeQuery> TraceChannel = TraceTypeQuery1;
 	
+private:
+	float AnimAngle = 0.0f;
+	FRotator OldRotation;
+	bool bISUsingMouse = true;
 
 };

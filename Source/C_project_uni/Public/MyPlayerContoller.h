@@ -18,8 +18,7 @@ class C_PROJECT_UNI_API AMyPlayerContoller : public APlayerController
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditDefaultsOnly, Category = "Input")
-	TObjectPtr<UInputMappingContext> MappingContext = nullptr;
+
 
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
 	UInputAction* MoveAction = nullptr;
@@ -34,13 +33,18 @@ protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
 	
+	UPROPERTY(EditDefaultsOnly, Category = "Input")
+	TObjectPtr<UInputMappingContext> MappingContext = nullptr;
+	
 	// for more info (const FInputActionInstance& InputActionInstance
 	void HandleMove(const FInputActionValue& InputActionValue);
+	FVector2D MovementVector;
 	void HandleDoge();
 	void HandleAttack();
 	
 	virtual void OnPossess(APawn* InPawn) override;
 	//virtual void OnUnPossess() override;
+
 private:
 	UPROPERTY()
 	UEnhancedInputComponent* EnhancedInputComponent = nullptr;
@@ -48,4 +52,6 @@ private:
 	APlayerCharacter* PlayerCharacter = nullptr;
 	UPROPERTY()
 	UEnhancedInputLocalPlayerSubsystem* InputSubsystem;
+
+
  };
