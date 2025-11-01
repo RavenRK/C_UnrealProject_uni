@@ -6,8 +6,9 @@
 #include "GameFramework/PlayerController.h"
 #include "MyPlayerContoller.generated.h"
 
-struct FInputActionValue;
-class APlayerCharacter;
+struct FInputActionInstance; // more info then V
+struct FInputActionValue; // less info then ^ just the value
+class APlayerTank;
 class UInputAction;
 class UEnhancedInputComponent;
 class UInputMappingContext;
@@ -18,17 +19,16 @@ class C_PROJECT_UNI_API AMyPlayerContoller : public APlayerController
 {
 	GENERATED_BODY()
 public:
-
-
+	//Input
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
 	UInputAction* MoveAction = nullptr;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
 	UInputAction* AttackAction = nullptr;
-	
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
 	UInputAction* DogeAction = nullptr;
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
+	UInputAction* RotateAction = nullptr;
+	
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -37,10 +37,16 @@ protected:
 	TObjectPtr<UInputMappingContext> MappingContext = nullptr;
 	
 	// for more info (const FInputActionInstance& InputActionInstance
-	void HandleMove(const FInputActionValue& InputActionValue);
 	FVector2D MovementVector;
+	void HandleMove(const FInputActionValue& IAValue);
+	void HandleRotate(const FInputActionValue& IAValue);
 	void HandleDoge();
 	void HandleAttack();
+
+	UPROPERTY(EditAnywhere)
+	float MoveSpeed = 300;
+	UPROPERTY(EditAnywhere)
+	float RotateSpeed = 75;
 	
 	virtual void OnPossess(APawn* InPawn) override;
 	//virtual void OnUnPossess() override;
@@ -49,7 +55,7 @@ private:
 	UPROPERTY()
 	UEnhancedInputComponent* EnhancedInputComponent = nullptr;
 	UPROPERTY()
-	APlayerCharacter* PlayerCharacter = nullptr;
+	APlayerTank* PlayerTank = nullptr;
 	UPROPERTY()
 	UEnhancedInputLocalPlayerSubsystem* InputSubsystem;
 
