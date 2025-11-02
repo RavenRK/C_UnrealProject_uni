@@ -25,12 +25,11 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
 	UInputAction* AttackAction = nullptr;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
-	UInputAction* DogeAction = nullptr;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
 	UInputAction* RotateAction = nullptr;
 	
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaSeconds) override;
 	virtual void SetupInputComponent() override;
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
@@ -40,7 +39,6 @@ protected:
 	FVector2D MovementVector;
 	void HandleMove(const FInputActionValue& IAValue);
 	void HandleRotate(const FInputActionValue& IAValue);
-	void HandleDoge();
 	void HandleAttack();
 
 	UPROPERTY(EditAnywhere)

@@ -17,6 +17,15 @@ void AMyPlayerContoller::BeginPlay()
 
 }
 
+void AMyPlayerContoller::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	FHitResult HitResult;
+	GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
+	PlayerTank->RoateTO(HitResult.ImpactPoint);
+
+}
+
 void AMyPlayerContoller::SetupInputComponent()
 {
 	Super::SetupInputComponent();
@@ -32,13 +41,12 @@ void AMyPlayerContoller::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 	PlayerTank = Cast<APlayerTank>(InPawn);
 	
-	bShowMouseCursor = true;
-	if (MoveAction && AttackAction && DogeAction && RotateAction)
+	bShowMouseCursor = true; // show Cursor
+	if (MoveAction && AttackAction && RotateAction)
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered,this,&AMyPlayerContoller::HandleMove);
 		EnhancedInputComponent->BindAction(RotateAction, ETriggerEvent::Triggered,this,&AMyPlayerContoller::HandleRotate);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this,&AMyPlayerContoller::HandleAttack);
-		EnhancedInputComponent->BindAction(DogeAction, ETriggerEvent::Triggered, this,&AMyPlayerContoller::HandleDoge);
 	}
 }
 
@@ -49,7 +57,7 @@ void AMyPlayerContoller::HandleMove(const FInputActionValue& IAValue)
 	DeltaLocation.X = MoveSpeed * Value * UGameplayStatics::GetWorldDeltaSeconds(GetWorld());
 	PlayerTank->AddActorLocalOffset(DeltaLocation, true);
 	
-	GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Green, TEXT("move"));
+	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, TEXT("move"));
 }
 
 void AMyPlayerContoller::HandleRotate(const FInputActionValue& IAValue)
@@ -59,15 +67,10 @@ void AMyPlayerContoller::HandleRotate(const FInputActionValue& IAValue)
 	DeltaRotation.Yaw = RotateSpeed * Value * UGameplayStatics::GetWorldDeltaSeconds(GetWorld());
 	PlayerTank->AddActorLocalRotation(DeltaRotation, true);
 	
-	GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Green, TEXT("HandleRotate"));
-}
-
-void AMyPlayerContoller::HandleDoge()
-{
-	GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Green, TEXT("HandleDoge"));
+	GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Green, TEXT("HandleRotate"));
 }
 
 void AMyPlayerContoller::HandleAttack()
 {
-	GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Green, TEXT("HandleAttack"));
+	GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Green, TEXT("attack"));
 }

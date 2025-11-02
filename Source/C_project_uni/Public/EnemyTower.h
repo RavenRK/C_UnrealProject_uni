@@ -4,27 +4,25 @@
 
 #include "CoreMinimal.h"
 #include "MyBasePawn.h"
-#include "PlayerTank.generated.h"
+#include "EnemyTower.generated.h"
 
-class UCameraComponent;
-class USpringArmComponent;
-/**
- * 
- */
+class APlayerTank;
+
 UCLASS()
-class C_PROJECT_UNI_API APlayerTank : public AMyBasePawn
+class C_PROJECT_UNI_API AEnemyTower : public AMyBasePawn
 {
 	GENERATED_BODY()
+
 public:
-	APlayerTank();
+	AEnemyTower();
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
 protected:
 	virtual void BeginPlay() override;
 
+	UPROPERTY()
+	APlayerTank* PlayerTank;
 private:
-	UPROPERTY(VisibleAnywhere)
-	USpringArmComponent* SpringArm;
-	UPROPERTY(VisibleAnywhere)
-	UCameraComponent* Camera;
+	
 };

@@ -22,6 +22,8 @@ public:
 	UStaticMeshComponent* BaseMesh;
 	UPROPERTY(VisibleAnywhere)
 	UStaticMeshComponent* TurretMesh;
+	
+	virtual void RoateTO(FVector Target);
 
 protected:
 	AMyBasePawn();
