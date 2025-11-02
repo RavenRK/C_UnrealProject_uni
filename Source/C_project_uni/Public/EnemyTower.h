@@ -7,6 +7,7 @@
 #include "EnemyTower.generated.h"
 
 class APlayerTank;
+class USphereComponent;
 
 UCLASS()
 class C_PROJECT_UNI_API AEnemyTower : public AMyBasePawn
@@ -17,12 +18,26 @@ public:
 	AEnemyTower();
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+
+	UPROPERTY(VisibleAnywhere)
+	float AttackRange = 300;
 protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY()
-	APlayerTank* PlayerTank;
+	APawn* PlayerTank;
 private:
-	
+
+	UPROPERTY(VisibleAnywhere)
+	USphereComponent* AttackSphereRange;
+
+	UFUNCTION()
+	void OnSphereBeginOverlap(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult
+	);
 };

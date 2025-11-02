@@ -23,7 +23,6 @@ void AMyBasePawn::RoateTO(FVector Target)
 	FVector VectorToTarget = Target - TurretMesh->GetComponentLocation();
 
 	FRotator LookAtRotation = FRotator(0, VectorToTarget.Rotation().Yaw,0);
-	LookAtRotation += FRotator(0,90,0);
 
 	FRotator InterpolatedRotation = FMath::RInterpTo(
 		TurretMesh->GetComponentRotation(),

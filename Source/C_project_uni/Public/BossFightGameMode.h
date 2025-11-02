@@ -19,5 +19,5 @@ protected:
 	
 	UPROPERTY()
 	APlayerTank* PlayerTank;
-	int32 TowerCount;
+	int32 EnemyCount;
 };

@@ -16,17 +16,16 @@ void ABossFightGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	TArray<AActor*> EnemyTowers;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(),AEnemyTower::StaticClass(),EnemyTowers);
-	TowerCount = EnemyTowers.Num();
-	UE_LOG(LogTemp, Display,TEXT("Number of Enemy: %d"), TowerCount);
+	TArray<AActor*> Enemy;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(),AEnemyTower::StaticClass(),Enemy);
+	EnemyCount = Enemy.Num();
+	UE_LOG(LogTemp, Display,TEXT("Number of Enemy: %d"), EnemyCount);
 
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(),0);
 	if (PlayerPawn)
 	{
 		PlayerTank = Cast<APlayerTank>(PlayerPawn);
 		if (!PlayerTank)
-		UE_LOG(LogTemp,Display, TEXT("GameMode: Cast failed"));
+			UE_LOG(LogTemp,Display, TEXT("GameMode: Cast failed"));
 	}
-	
 }
