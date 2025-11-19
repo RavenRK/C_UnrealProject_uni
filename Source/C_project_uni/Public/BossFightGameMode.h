@@ -18,6 +18,10 @@ protected:
 	virtual void BeginPlay() override;
 	
 	UPROPERTY()
-	APlayerTank* PlayerTank;
+	APlayerTank* PlayerTank; // player ref
 	int32 EnemyCount;
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Debug")
+	bool bCanDebug = false;
 };

@@ -16,11 +16,15 @@ void ABossFightGameMode::BeginPlay()
 {
 	Super::BeginPlay();
 
-	TArray<AActor*> Enemy;
-	UGameplayStatics::GetAllActorsOfClass(GetWorld(),AEnemyTower::StaticClass(),Enemy);
-	EnemyCount = Enemy.Num();
-	UE_LOG(LogTemp, Display,TEXT("Number of Enemy: %d"), EnemyCount);
+	
+	TArray<AActor*> Enemy; 	//define array & get all AEnemyTower in current world
+	UGameplayStatics::GetAllActorsOfClass(this,AEnemyTower::StaticClass(),Enemy);
+	EnemyCount = Enemy.Num();	//get number of enemy
+	
+	if (bCanDebug)
+		UE_LOG(LogTemp, Display,TEXT("Number of Enemy: %d"), EnemyCount);
 
+	//get player ref
 	APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(),0);
 	if (PlayerPawn)
 	{

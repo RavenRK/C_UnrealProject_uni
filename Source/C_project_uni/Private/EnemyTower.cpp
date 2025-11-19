@@ -11,39 +11,75 @@ AEnemyTower::AEnemyTower()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
+	//set up attack range sphere
 	AttackSphereRange = CreateDefaultSubobject<USphereComponent>(TEXT("AttackRange"));
 	AttackSphereRange->SetSphereRadius(AttackRange);
 	AttackSphereRange->SetupAttachment(RootComponent);
-
-
+	
 }
 
 void AEnemyTower::BeginPlay()
 {
 	Super::BeginPlay();
-	AttackSphereRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyTower::OnSphereBeginOverlap);
-	
-	PlayerTank = UGameplayStatics::GetPlayerPawn(GetWorld(),0);
-	PlayerTank = Cast<APlayerTank>(PlayerTank);
+
+	PlayerTank = Cast<APlayerTank>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
 }
 
+void AEnemyTower::FireProJ()
+{
+	if (PlayerTank && bCanFire)
+	{
+		//spawn VFX
+		//play sound
+		Fire();
+	}
+}
+
+void AEnemyTower::RotateToPlayer()
+{
+	if (PlayerTank && bTowerCanRoate)
+		RotateTo(PlayerTank->GetActorLocation());
+}
+
+void AEnemyTower::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	if (AttackSphereRange)	//set up overlap event
+	{
+		AttackSphereRange->OnComponentBeginOverlap.AddDynamic(this, &AEnemyTower::OnSphereBeginOverlap);
+		AttackSphereRange->OnComponentEndOverlap.AddDynamic(this, &AEnemyTower::OnSphereEndOverlap);
+	}
+}
+
+//when player is in range 
 void AEnemyTower::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	GEngine->AddOnScreenDebugMessage(2, .1f, FColor::Green, TEXT("in range"));
+	APlayerTank* Player = Cast<APlayerTank>(OtherActor);
+	if (!Player) return;
+	
+	bTowerCanRoate = true;
+	bCanFire = true;
 
+	GetWorldTimerManager().SetTimer(FireTimerHandle, this, &AEnemyTower::FireProJ, FireRate, true);
+	GetWorldTimerManager().SetTimer(RotateToPlayerTimerHandle, this, &AEnemyTower::RotateToPlayer, TurnRate, true);
 }
+
+void AEnemyTower::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+	bTowerCanRoate = false;
+	bCanFire = false;
+	
+	GetWorld()->GetTimerManager().ClearTimer(FireTimerHandle);
+	GetWorld()->GetTimerManager().ClearTimer(RotateToPlayerTimerHandle);
+}
+
 
 void AEnemyTower::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	if (PlayerTank)
-		RoateTO(PlayerTank->GetActorLocation());
+
 }
 
-void AEnemyTower::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	
-}
 

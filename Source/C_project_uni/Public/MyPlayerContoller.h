@@ -20,11 +20,11 @@ class C_PROJECT_UNI_API AMyPlayerContoller : public APlayerController
 	GENERATED_BODY()
 public:
 	//Input
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Input Action")
 	UInputAction* MoveAction = nullptr;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Input Action")
 	UInputAction* AttackAction = nullptr;
-	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Movement Action")
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Input Action")
 	UInputAction* RotateAction = nullptr;
 	
 protected:
@@ -35,7 +35,8 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Input")
 	TObjectPtr<UInputMappingContext> MappingContext = nullptr;
 	
-	// for more info (const FInputActionInstance& InputActionInstance
+	// more info (const FInputActionInstance& InputActionInstance
+	// for Value (const FInputActionValue& IAValue);
 	FVector2D MovementVector;
 	void HandleMove(const FInputActionValue& IAValue);
 	void HandleRotate(const FInputActionValue& IAValue);
@@ -50,12 +51,9 @@ protected:
 	//virtual void OnUnPossess() override;
 
 private:
-	UPROPERTY()
-	UEnhancedInputComponent* EnhancedInputComponent = nullptr;
-	UPROPERTY()
-	APlayerTank* PlayerTank = nullptr;
-	UPROPERTY()
-	UEnhancedInputLocalPlayerSubsystem* InputSubsystem;
+	UPROPERTY() UEnhancedInputComponent* EnhancedInputComponent = nullptr;
+	UPROPERTY() APlayerTank* PlayerTank = nullptr;
+	UPROPERTY() UEnhancedInputLocalPlayerSubsystem* InputSubsystem;
 
 
  };

@@ -17,22 +17,44 @@ class C_PROJECT_UNI_API AEnemyTower : public AMyBasePawn
 public:
 	AEnemyTower();
 	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	
+	//90% sure I don't need this
+	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	UPROPERTY(VisibleAnywhere)
-	float AttackRange = 300;
 protected:
-	virtual void BeginPlay() override;
-
+	UPROPERTY(EditAnywhere, Category = "Enemy Stats")
+	float FireRate = 2.f;
+	UPROPERTY(EditAnywhere, Category = "Enemy Stats")
+	float AttackRange = 300;
+	UPROPERTY(EditAnywhere, Category = "Enemy Stats")
+	float TurnRate = 0.01f;
+	
+	UPROPERTY(VisibleAnywhere)
+	bool bTowerCanRoate = false;
+	UPROPERTY(VisibleAnywhere)
+	bool bCanFire = false;
+	
+	UPROPERTY()
+	FTimerHandle FireTimerHandle;
+	UPROPERTY()
+	FTimerHandle RotateToPlayerTimerHandle;
+	
 	UPROPERTY()
 	APawn* PlayerTank;
+	
+	virtual void BeginPlay() override;
+	virtual void FireProJ();
+	void RotateToPlayer();
+	
 private:
-
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* AttackSphereRange;
 
+	virtual void PostInitializeComponents() override;
+	
 	UFUNCTION()
-	void OnSphereBeginOverlap(
+	void OnSphereBeginOverlap
+	(
 		UPrimitiveComponent* OverlappedComponent,
 		AActor* OtherActor,
 		UPrimitiveComponent* OtherComp,
@@ -40,4 +62,14 @@ private:
 		bool bFromSweep,
 		const FHitResult& SweepResult
 	);
+	
+	UFUNCTION()
+	void OnSphereEndOverlap
+	(
+		UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex
+	);
+
 };

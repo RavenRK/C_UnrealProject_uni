@@ -2,23 +2,29 @@
 
 
 #include "MyBasePawn.h"
-
 #include "Components/BoxComponent.h"
-//#include "Components/BoxComponent.h"
 
 AMyBasePawn::AMyBasePawn()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	
 	BoxComponent = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxColl"));
-	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseMesh"));
-	TurretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TurretMesh"));
 	SetRootComponent(BoxComponent);
+	
+	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseMesh"));
 	BaseMesh->SetupAttachment(BoxComponent);
-	TurretMesh->SetupAttachment(BaseMesh);
+	
+	TurrentMeshRoot = CreateDefaultSubobject<USceneComponent>(TEXT("TurrentRoot"));
+	TurrentMeshRoot->SetupAttachment(BaseMesh);
+	
+	TurretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TurretMesh"));
+	TurretMesh->SetupAttachment(TurrentMeshRoot);
+	
+	ProJSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("ProJSpawnPoint"));
+	ProJSpawnPoint->SetupAttachment(TurretMesh);
 }
 
-void AMyBasePawn::RoateTO(FVector Target)
+void AMyBasePawn::RotateTo(FVector Target)
 {
 	FVector VectorToTarget = Target - TurretMesh->GetComponentLocation();
 
@@ -31,6 +37,14 @@ void AMyBasePawn::RoateTO(FVector Target)
 		10);
 	
 	TurretMesh->SetWorldRotation(InterpolatedRotation);
+}
+
+void AMyBasePawn::Fire()
+{
+	FVector SpawnLocation = ProJSpawnPoint->GetComponentLocation();
+	FRotator SPawnRoation = ProJSpawnPoint->GetComponentRotation();
+
+	DrawDebugSphere(GetWorld(), SpawnLocation,25, 12, FColor::Red, false, 2);
 }
 
 

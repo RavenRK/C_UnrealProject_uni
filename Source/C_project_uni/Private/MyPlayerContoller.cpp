@@ -22,7 +22,7 @@ void AMyPlayerContoller::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 	FHitResult HitResult;
 	GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
-	PlayerTank->RoateTO(HitResult.ImpactPoint);
+	PlayerTank->RotateTo(HitResult.ImpactPoint);
 
 }
 
@@ -41,12 +41,12 @@ void AMyPlayerContoller::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 	PlayerTank = Cast<APlayerTank>(InPawn);
 	
-	bShowMouseCursor = true; // show Cursor
+	//bShowMouseCursor = true; // show Cursor
 	if (MoveAction && AttackAction && RotateAction)
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered,this,&AMyPlayerContoller::HandleMove);
 		EnhancedInputComponent->BindAction(RotateAction, ETriggerEvent::Triggered,this,&AMyPlayerContoller::HandleRotate);
-		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this,&AMyPlayerContoller::HandleAttack);
+		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this,&AMyPlayerContoller::HandleAttack);
 	}
 }
 
@@ -72,5 +72,6 @@ void AMyPlayerContoller::HandleRotate(const FInputActionValue& IAValue)
 
 void AMyPlayerContoller::HandleAttack()
 {
+	PlayerTank->Fire();
 	GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Green, TEXT("attack"));
 }

@@ -16,7 +16,6 @@ APlayerTank::APlayerTank()
 void APlayerTank::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
 void APlayerTank::Tick(float DeltaTime)
