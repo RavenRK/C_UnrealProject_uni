@@ -55,8 +55,7 @@ void AEnemyTower::PostInitializeComponents()
 void AEnemyTower::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	APlayerTank* Player = Cast<APlayerTank>(OtherActor);
-	if (!Player) return;
+	if (!PlayerTank) return;
 	
 	bTowerCanRoate = true;
 	bCanFire = true;
@@ -68,6 +67,8 @@ void AEnemyTower::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 void AEnemyTower::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
+	if (!PlayerTank) return;
+	
 	bTowerCanRoate = false;
 	bCanFire = false;
 	

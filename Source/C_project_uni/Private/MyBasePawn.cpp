@@ -3,6 +3,8 @@
 
 #include "MyBasePawn.h"
 #include "Components/BoxComponent.h"
+#include "ProjectileBase.h"
+#include "HealthComp.h"
 
 AMyBasePawn::AMyBasePawn()
 {
@@ -20,14 +22,22 @@ AMyBasePawn::AMyBasePawn()
 	TurretMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TurretMesh"));
 	TurretMesh->SetupAttachment(TurrentMeshRoot);
 	
+	HealthCompo = CreateDefaultSubobject<UHealthComp>("HealthComp");
+	
 	ProJSpawnPoint = CreateDefaultSubobject<USceneComponent>(TEXT("ProJSpawnPoint"));
 	ProJSpawnPoint->SetupAttachment(TurretMesh);
+}
+
+void AMyBasePawn::BeginPlay()
+{
+	Super::BeginPlay();
+
+	BaseMesh->OnComponentHit;
 }
 
 void AMyBasePawn::RotateTo(FVector Target)
 {
 	FVector VectorToTarget = Target - TurretMesh->GetComponentLocation();
-
 	FRotator LookAtRotation = FRotator(0, VectorToTarget.Rotation().Yaw,0);
 
 	FRotator InterpolatedRotation = FMath::RInterpTo(
@@ -42,10 +52,14 @@ void AMyBasePawn::RotateTo(FVector Target)
 void AMyBasePawn::Fire()
 {
 	FVector SpawnLocation = ProJSpawnPoint->GetComponentLocation();
-	FRotator SPawnRoation = ProJSpawnPoint->GetComponentRotation();
+	FRotator SpawnRoation = ProJSpawnPoint->GetComponentRotation();
 
-	DrawDebugSphere(GetWorld(), SpawnLocation,25, 12, FColor::Red, false, 2);
+	AProjectileBase* Projectile = GetWorld()->SpawnActor<AProjectileBase>(ProJBase,SpawnLocation,SpawnRoation);
+	if (Projectile) {Projectile->SetOwner(this);}
+	
+	//DrawDebugSphere(GetWorld(), SpawnLocation,25, 12, FColor::Red, false, 2);
 }
+
 
 
 
