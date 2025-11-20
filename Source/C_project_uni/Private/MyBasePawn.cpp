@@ -31,8 +31,7 @@ AMyBasePawn::AMyBasePawn()
 void AMyBasePawn::BeginPlay()
 {
 	Super::BeginPlay();
-
-	BaseMesh->OnComponentHit;
+	
 }
 
 void AMyBasePawn::RotateTo(FVector Target)

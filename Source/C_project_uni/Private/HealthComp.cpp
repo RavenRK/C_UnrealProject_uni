@@ -13,8 +13,10 @@ void UHealthComp::BeginPlay()
 	Super::BeginPlay();
 
 	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComp::OnDmgTaken);
+	
 }
 
+// this get called when the owner gets hit by something ( player / enemy )
 void UHealthComp::OnDmgTaken(AActor* DamagedActor, float Damage, const class UDamageType* DamageType,
 	class AController* InstigatedBy, AActor* DamageCauser)
 {
@@ -24,5 +26,7 @@ void UHealthComp::OnDmgTaken(AActor* DamagedActor, float Damage, const class UDa
 
 void UHealthComp::Death()
 {
+	
+	OnDeath.Broadcast(GetOwner());
 	GetOwner()->Destroy();
 }

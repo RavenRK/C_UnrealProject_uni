@@ -21,7 +21,21 @@ protected:
 	APlayerTank* PlayerTank; // player ref
 	int32 EnemyCount;
 
+	UFUNCTION()
+	void OnPlayerDead(AActor* DeadActor);
+	UFUNCTION()
+	void OnEnemyDead(AActor* DeadActor);
 private:
 	UPROPERTY(EditAnywhere, Category = "Debug")
 	bool bCanDebug = false;
+
+	/* get all enemys in would
+	 * get number of enemys
+	 * bing on dead EVENT ( so we know when an enemy is dead )
+	 */
+	void GetAllEnemys();
+	/*Get player ref
+	 * bing player dead EVENT
+	 */
+	void GetPlayer();
 };

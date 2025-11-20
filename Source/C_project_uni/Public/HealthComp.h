@@ -6,7 +6,6 @@
 #include "Components/ActorComponent.h"
 #include "HealthComp.generated.h"
 
-
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class C_PROJECT_UNI_API UHealthComp : public UActorComponent
 {
@@ -15,27 +14,28 @@ class C_PROJECT_UNI_API UHealthComp : public UActorComponent
 public:
 	UHealthComp();
 	//virtual void TickComponent(float DeltaTime, ELevelTick TickType,FActorComponentTickFunction* ThisTickFunction) override;
-
 	
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	float MaxHealth = 100.f;
-	
 
+	DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnDeathSignature, AActor*, DeadActor);
+	UPROPERTY(BlueprintAssignable)
+	FOnDeathSignature OnDeath;
 	
 protected:
-	virtual void BeginPlay() override;
-
-	UFUNCTION()
-	virtual void OnDmgTaken(
-		AActor* DamagedActor,
-		float Damage,
-		const class UDamageType* DamageType,
-		class AController* InstigatedBy,
-		AActor* DamageCauser );
-
-	virtual void Death();
-private:
-
+		
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	float CurrentHealth;
+	
+	virtual void BeginPlay() override;
+	
+	UFUNCTION()
+	virtual void OnDmgTaken
+	( AActor* DamagedActor, float Damage, const class UDamageType* DamageType,
+		class AController* InstigatedBy, AActor* DamageCauser );
+
+	virtual void Death();
+
+private:
+
 };

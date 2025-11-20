@@ -10,7 +10,7 @@ class UHealthComp;
 class UBoxComponent;
 class AProjectileBase;
 
-UCLASS()
+UCLASS(Abstract)
 class C_PROJECT_UNI_API AMyBasePawn : public APawn
 {
 	GENERATED_BODY()
@@ -27,15 +27,10 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	UHealthComp* HealthCompo;
-
 	
 	virtual void RotateTo(FVector Target);
 	virtual void Fire();
 
-
-
-
-	
 protected:
 	AMyBasePawn();
 	
