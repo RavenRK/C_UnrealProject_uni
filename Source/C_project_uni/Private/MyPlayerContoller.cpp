@@ -5,7 +5,6 @@
 #include "PlayerTank.h"
 
 #include "EnhancedInputComponent.h"
-#include "InputMappingContext.h"
 #include "EnhancedInputSubsystems.h"
 #include "InputAction.h"
 #include "InputActionValue.h"
@@ -14,7 +13,6 @@
 void AMyPlayerContoller::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 void AMyPlayerContoller::Tick(float DeltaSeconds)
@@ -41,37 +39,51 @@ void AMyPlayerContoller::OnPossess(APawn* InPawn)
 	Super::OnPossess(InPawn);
 	PlayerTank = Cast<APlayerTank>(InPawn);
 	
-	//bShowMouseCursor = true; // show Cursor
+	bShowMouseCursor = true; // show Cursor
+
 	if (MoveAction && AttackAction && RotateAction)
 	{
 		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Triggered,this,&AMyPlayerContoller::HandleMove);
+		EnhancedInputComponent->BindAction(MoveAction, ETriggerEvent::Completed,this,&AMyPlayerContoller::MoveCompleted);
 		EnhancedInputComponent->BindAction(RotateAction, ETriggerEvent::Triggered,this,&AMyPlayerContoller::HandleRotate);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Started, this,&AMyPlayerContoller::HandleAttack);
+
 	}
 }
 
 void AMyPlayerContoller::HandleMove(const FInputActionValue& IAValue)
 {
+	if (!PlayerTank->bisAlive) {return;}
+
+	PlayerTank->PlayerMoveFeedBack();
+	
 	float Value = IAValue.Get<float>();
 	FVector DeltaLocation = FVector(0,0,0);
 	DeltaLocation.X = MoveSpeed * Value * UGameplayStatics::GetWorldDeltaSeconds(GetWorld());
 	PlayerTank->AddActorLocalOffset(DeltaLocation, true);
 	
-	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, TEXT("move"));
+	//GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, TEXT("move"));
 }
-
+void AMyPlayerContoller::MoveCompleted()
+{
+	PlayerTank->PlayerStopMoveFeedBack();
+}
 void AMyPlayerContoller::HandleRotate(const FInputActionValue& IAValue)
 {
+	if (!PlayerTank->bisAlive) {return;}
 	float Value = IAValue.Get<float>();
 	FRotator DeltaRotation = FRotator(0,0,0);
 	DeltaRotation.Yaw = RotateSpeed * Value * UGameplayStatics::GetWorldDeltaSeconds(GetWorld());
 	PlayerTank->AddActorLocalRotation(DeltaRotation, true);
 	
-	GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Green, TEXT("HandleRotate"));
+	//GEngine->AddOnScreenDebugMessage(2, 5.f, FColor::Green, TEXT("HandleRotate"));
 }
 
 void AMyPlayerContoller::HandleAttack()
 {
+	if (!PlayerTank->bisAlive) {return;}
 	PlayerTank->Fire();
-	GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Green, TEXT("attack"));
+	//GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Green, TEXT("attack"));
 }
+
+

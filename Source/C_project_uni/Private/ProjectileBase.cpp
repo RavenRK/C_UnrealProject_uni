@@ -3,7 +3,7 @@
 
 #include "ProjectileBase.h"
 
-#include "Components/CapsuleComponent.h"
+#include "Components/BoxComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -11,25 +11,29 @@ AProjectileBase::AProjectileBase()
 {
 	PrimaryActorTick.bCanEverTick = true;
 
-	BaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BaseMesh"));
-	BaseMesh->SetupAttachment(RootComponent);
+	BaseColl = CreateDefaultSubobject<UBoxComponent>(TEXT("BaseColl"));
+	BaseColl->SetupAttachment(RootComponent);
 
 	ProjMoveComp = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComp");
-	
-	ProjMoveComp->InitialSpeed = StartSpeed;
-	ProjMoveComp->MaxSpeed = MaxSpeed;
+
 }
 
 void AProjectileBase::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
-	BaseMesh->OnComponentHit.AddDynamic(this, &AProjectileBase::OnHit);
+	BaseColl->OnComponentHit.AddDynamic(this, &AProjectileBase::OnHit);
 
 }
 
 void AProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();
+	
+}
+
+void AProjectileBase::OnHitFeedBack_Implementation()
+{
+	
 }
 
 void AProjectileBase::Tick(float DeltaTime)
@@ -41,6 +45,7 @@ void AProjectileBase::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActo
 	FVector NormalImpulse, const FHitResult& Hit)
 {
 	AActor* MyOwner = GetOwner();
+	OnHitFeedBack();
 	if (MyOwner)
 	{
 		if (OtherActor && OtherActor != MyOwner)

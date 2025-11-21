@@ -22,6 +22,7 @@ void ABossFightGameMode::BeginPlay()
 }
 
 #pragma region EnemyHandling
+
 void ABossFightGameMode::GetAllEnemys()
 {
 	TArray<AActor*> EnemyTowers; 	//define array & get all AEnemyTower in current world
@@ -44,7 +45,8 @@ void ABossFightGameMode::OnEnemyDead(AActor* DeadActor)
 	EnemyCount--;
 	if (EnemyCount <= 0)
 	{
-		//allow next level base when ENEMY = 0
+		GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Green, TEXT("win"));
+		GameOverString = "Victory";
 	}
 }
 #pragma endregion EnemyHandling
@@ -60,14 +62,22 @@ void ABossFightGameMode::GetPlayer()
 			if (UHealthComp* PlayerHealth = PlayerTank->FindComponentByClass<UHealthComp>())
 				PlayerHealth->OnDeath.AddDynamic(this, &ABossFightGameMode::OnPlayerDead);
 		}
-
 	}
 }
-void ABossFightGameMode::OnPlayerDead(AActor* DeadActor)
-{
-	//player dead restart level or something ?
-	//maybe new player at check piont ?
-}
+
 #pragma endregion PlayerSetup
 
 
+void ABossFightGameMode::OnPlayerDead(AActor* DeadActor)
+{
+	GameOverString = "Defeat";
+	GetWorldTimerManager().SetTimer(GameOverTimer, this, &ABossFightGameMode::OnGameOverTimerTimeOut, GameOverDelay, false );
+
+	//player dead restart level or something ?
+	//maybe new player at check piont ?
+}
+void ABossFightGameMode::OnGameOverTimerTimeOut()
+{
+	FString CurrentLevelName = UGameplayStatics::GetCurrentLevelName(this);
+	UGameplayStatics::OpenLevel(this, *CurrentLevelName);
+}

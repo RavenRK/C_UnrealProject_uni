@@ -20,7 +20,12 @@ protected:
 	UPROPERTY()
 	APlayerTank* PlayerTank; // player ref
 	int32 EnemyCount;
+	
+	bool isGameOver = false;
+	bool isVictory = false;
 
+	FString GameOverString;
+	
 	UFUNCTION()
 	void OnPlayerDead(AActor* DeadActor);
 	UFUNCTION()
@@ -29,6 +34,13 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Debug")
 	bool bCanDebug = false;
 
+	UPROPERTY(EditAnywhere)
+	float GameOverDelay = 3.f;
+
+	void OnGameOverTimerTimeOut();
+	UPROPERTY()
+	FTimerHandle GameOverTimer;
+	
 	/* get all enemys in would
 	 * get number of enemys
 	 * bing on dead EVENT ( so we know when an enemy is dead )

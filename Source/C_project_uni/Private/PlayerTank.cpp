@@ -3,7 +3,7 @@
 
 #include "PlayerTank.h"
 #include "GameFramework/SpringArmComponent.h"
-#include  "Camera/CameraComponent.h"
+#include "Camera/CameraComponent.h"
 
 APlayerTank::APlayerTank()
 {
@@ -27,3 +27,20 @@ void APlayerTank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
+void APlayerTank::OnPawnDestruction(AActor* DeadActor)
+{
+	Super::OnPawnDestruction(DeadActor);
+
+	SetActorHiddenInGame(true);
+	SetActorTickEnabled(false);
+	SetPlayerEnabled(false);
+	bisAlive = false;
+}
+
+void APlayerTank::SetPlayerEnabled(bool Enabled)
+{
+	APlayerController* PlayerContoller = Cast<APlayerController>(GetController());
+}
+
+void APlayerTank::PlayerMoveFeedBack_Implementation() {}
+void APlayerTank::PlayerStopMoveFeedBack_Implementation() {}

@@ -7,7 +7,7 @@
 #include "MyPlayerContoller.generated.h"
 
 struct FInputActionInstance; // more info then V
-struct FInputActionValue; // less info then ^ just the value
+struct FInputActionValue;	 // less info then ^ just the value
 class APlayerTank;
 class UInputAction;
 class UEnhancedInputComponent;
@@ -28,6 +28,11 @@ public:
 	UInputAction* RotateAction = nullptr;
 	
 protected:
+	UPROPERTY(EditAnywhere)
+	float MoveSpeed = 300;
+	UPROPERTY(EditAnywhere)
+	float RotateSpeed = 75;
+	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 	virtual void SetupInputComponent() override;
@@ -41,11 +46,7 @@ protected:
 	void HandleMove(const FInputActionValue& IAValue);
 	void HandleRotate(const FInputActionValue& IAValue);
 	void HandleAttack();
-
-	UPROPERTY(EditAnywhere)
-	float MoveSpeed = 300;
-	UPROPERTY(EditAnywhere)
-	float RotateSpeed = 75;
+	void MoveCompleted();
 	
 	virtual void OnPossess(APawn* InPawn) override;
 	//virtual void OnUnPossess() override;

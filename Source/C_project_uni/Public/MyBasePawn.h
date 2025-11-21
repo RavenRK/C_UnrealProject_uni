@@ -27,10 +27,22 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	UHealthComp* HealthCompo;
+
+	UPROPERTY()
+	APlayerController* PlayerController;
+
+	UPROPERTY(EditAnywhere)
+	float ProJSpread = 6;
 	
 	virtual void RotateTo(FVector Target);
-	virtual void Fire();
+	virtual void Fire(); 
 
+	UFUNCTION()
+	virtual void OnPawnDestruction(AActor* DeadActor);
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void DeathFeedBack();
+	
 protected:
 	AMyBasePawn();
 	

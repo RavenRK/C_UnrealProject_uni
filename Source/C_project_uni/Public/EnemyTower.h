@@ -23,9 +23,9 @@ public:
 
 protected:
 	UPROPERTY(EditAnywhere, Category = "Enemy Stats")
-	float FireRate = 2.f;
+	float FireRate = .5f;
 	UPROPERTY(EditAnywhere, Category = "Enemy Stats")
-	float AttackRange = 300;
+	float AttackRange = 700;
 	UPROPERTY(EditAnywhere, Category = "Enemy Stats")
 	float TurnRate = 0.01f;
 	
@@ -40,7 +40,9 @@ protected:
 	FTimerHandle RotateToPlayerTimerHandle;
 	
 	UPROPERTY()
-	APawn* PlayerTank;
+	APlayerTank* PlayerTank;
+
+	virtual void OnPawnDestruction(AActor* DeadActor) override;
 	
 	virtual void BeginPlay() override;
 	virtual void FireProJ();
@@ -50,6 +52,8 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* AttackSphereRange;
 
+
+	
 	virtual void PostInitializeComponents() override;
 	
 	UFUNCTION()
@@ -71,5 +75,6 @@ private:
 		UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex
 	);
+	void StopAttackTimer();
 
 };

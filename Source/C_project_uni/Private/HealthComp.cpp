@@ -28,5 +28,5 @@ void UHealthComp::Death()
 {
 	
 	OnDeath.Broadcast(GetOwner());
-	GetOwner()->Destroy();
+	//GetOwner()->Destroy();
 }

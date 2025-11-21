@@ -18,6 +18,12 @@ AEnemyTower::AEnemyTower()
 	
 }
 
+void AEnemyTower::OnPawnDestruction(AActor* DeadActor)
+{
+	Super::OnPawnDestruction(DeadActor);
+	Destroy();
+}
+
 void AEnemyTower::BeginPlay()
 {
 	Super::BeginPlay();
@@ -29,9 +35,13 @@ void AEnemyTower::FireProJ()
 {
 	if (PlayerTank && bCanFire)
 	{
+		if (!PlayerTank->bisAlive)
+			{ StopAttackTimer(); return;}
+		
 		//spawn VFX
 		//play sound
 		Fire();
+
 	}
 }
 
@@ -56,6 +66,7 @@ void AEnemyTower::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (!PlayerTank) return;
+	if (!PlayerTank->bisAlive) return;
 	
 	bTowerCanRoate = true;
 	bCanFire = true;
@@ -68,14 +79,17 @@ void AEnemyTower::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, A
 	UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
 	if (!PlayerTank) return;
-	
+	StopAttackTimer();
+}
+
+void AEnemyTower::StopAttackTimer()
+{
 	bTowerCanRoate = false;
 	bCanFire = false;
 	
 	GetWorld()->GetTimerManager().ClearTimer(FireTimerHandle);
 	GetWorld()->GetTimerManager().ClearTimer(RotateToPlayerTimerHandle);
 }
-
 
 void AEnemyTower::Tick(float DeltaTime)
 {

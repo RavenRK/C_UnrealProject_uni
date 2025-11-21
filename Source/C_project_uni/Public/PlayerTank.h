@@ -8,20 +8,27 @@
 
 class UCameraComponent;
 class USpringArmComponent;
-/**
- * 
- */
+
 UCLASS()
 class C_PROJECT_UNI_API APlayerTank : public AMyBasePawn
 {
 	GENERATED_BODY()
 public:
 	APlayerTank();
-	virtual void Tick(float DeltaTime) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	bool bisAlive = true;
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void PlayerMoveFeedBack();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void PlayerStopMoveFeedBack();
 protected:
 	virtual void BeginPlay() override;
+	virtual void Tick(float DeltaTime) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	virtual void OnPawnDestruction(AActor* DeadActor) override;
+	void SetPlayerEnabled(bool Enabled);
 private:
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArm;
@@ -29,5 +36,4 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Camera;
 
-	
 };

@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "ProjectileBase.generated.h"
 
-class UCapsuleComponent;
+class UBoxComponent;
 class UProjectileMovementComponent; 
 
 UCLASS()
@@ -18,12 +18,8 @@ public:
 	AProjectileBase();
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditDefaultsOnly, Category = "ProJStats")
+	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite, Category = "ProJStats")
 	float ProJDmg = 25;
-	UPROPERTY(EditDefaultsOnly, Category = "ProJStats")
-	float StartSpeed = 2500;
-	UPROPERTY(EditDefaultsOnly, Category = "ProJStats")
-	float MaxSpeed = 2600;
 	
 	UFUNCTION()
 	virtual void OnHit(UPrimitiveComponent* HitComponent,
@@ -37,10 +33,14 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
+	UFUNCTION(BlueprintNativeEvent)
+	void OnHitFeedBack();
+	
+
 private:
 	UPROPERTY(VisibleAnywhere)
-	UStaticMeshComponent* BaseMesh;
-
+	UBoxComponent* BaseColl;
+	
 	UPROPERTY(VisibleAnywhere)
 	USceneComponent* ProJRoot;
 

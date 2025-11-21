@@ -31,7 +31,8 @@ AMyBasePawn::AMyBasePawn()
 void AMyBasePawn::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	HealthCompo->OnDeath.AddDynamic(this, &AMyBasePawn::OnPawnDestruction);
 }
 
 void AMyBasePawn::RotateTo(FVector Target)
@@ -51,13 +52,23 @@ void AMyBasePawn::RotateTo(FVector Target)
 void AMyBasePawn::Fire()
 {
 	FVector SpawnLocation = ProJSpawnPoint->GetComponentLocation();
-	FRotator SpawnRoation = ProJSpawnPoint->GetComponentRotation();
+	FRotator SpawnRotation = ProJSpawnPoint->GetComponentRotation();
 
-	AProjectileBase* Projectile = GetWorld()->SpawnActor<AProjectileBase>(ProJBase,SpawnLocation,SpawnRoation);
+	float YawSpread   = FMath::RandRange(-ProJSpread,ProJSpread);
+	SpawnRotation.Yaw   += YawSpread;
+
+	AProjectileBase* Projectile = GetWorld()->SpawnActor<AProjectileBase>(ProJBase,SpawnLocation,SpawnRotation);
 	if (Projectile) {Projectile->SetOwner(this);}
 	
 	//DrawDebugSphere(GetWorld(), SpawnLocation,25, 12, FColor::Red, false, 2);
 }
+
+void AMyBasePawn::OnPawnDestruction(AActor* DeadActor)
+{
+	DeathFeedBack();
+}
+
+void AMyBasePawn::DeathFeedBack_Implementation() {}
 
 
 
