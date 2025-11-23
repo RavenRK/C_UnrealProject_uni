@@ -22,12 +22,10 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnDeathSignature OnDeath;
 	
-	void TakeDmg(float Dmg);
-	UPROPERTY(EditDefaultsOnly, Category = "Health")
-	float CurrentHealth;
 protected:
 		
-
+	UPROPERTY(EditDefaultsOnly, Category = "Health")
+	float CurrentHealth;
 	
 	virtual void BeginPlay() override;
 	
@@ -38,5 +36,6 @@ protected:
 
 	virtual void Death();
 
+private:
 
 };

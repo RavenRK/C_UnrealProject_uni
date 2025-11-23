@@ -5,7 +5,6 @@
 #include "Components/BoxComponent.h"
 #include "ProjectileBase.h"
 #include "HealthComp.h"
-#include "StatusEffects.h"
 
 AMyBasePawn::AMyBasePawn()
 {
@@ -41,18 +40,16 @@ void AMyBasePawn::RotateTo(FVector Target)
 	FVector VectorToTarget = Target - TurretMesh->GetComponentLocation();
 	FRotator LookAtRotation = FRotator(0, VectorToTarget.Rotation().Yaw,0);
 
-	FRotator InterpolatedRotation = FMath::RInterpTo
-	(
+	FRotator InterpolatedRotation = FMath::RInterpTo(
 		TurretMesh->GetComponentRotation(),
 		LookAtRotation,
 		GetWorld()->GetDeltaSeconds(),
-		10
-	);
+		10);
 	
 	TurretMesh->SetWorldRotation(InterpolatedRotation);
 }
 
-void AMyBasePawn::Fire(float Dmg)
+void AMyBasePawn::Fire()
 {
 	FVector SpawnLocation = ProJSpawnPoint->GetComponentLocation();
 	FRotator SpawnRotation = ProJSpawnPoint->GetComponentRotation();
@@ -61,11 +58,7 @@ void AMyBasePawn::Fire(float Dmg)
 	SpawnRotation.Yaw   += YawSpread;
 
 	AProjectileBase* Projectile = GetWorld()->SpawnActor<AProjectileBase>(ProJBase,SpawnLocation,SpawnRotation);
-	if (Projectile)
-	{
-		Projectile->SetOwner(this);
-		Projectile->ProJDmg *= Dmg;
-	}
+	if (Projectile) {Projectile->SetOwner(this);}
 	
 	//DrawDebugSphere(GetWorld(), SpawnLocation,25, 12, FColor::Red, false, 2);
 }

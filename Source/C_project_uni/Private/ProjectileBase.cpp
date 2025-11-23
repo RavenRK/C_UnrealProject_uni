@@ -6,9 +6,6 @@
 #include "Components/BoxComponent.h"
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "ProJDmgType/ElecDamageType.h"
-#include "ProJDmgType/FireDmageType.h"
-#include "ProJDmgType/IceDamageType.h"
 
 AProjectileBase::AProjectileBase()
 {
@@ -31,9 +28,14 @@ void AProjectileBase::PostInitializeComponents()
 void AProjectileBase::BeginPlay()
 {
 	Super::BeginPlay();
+	
 }
 
-void AProjectileBase::OnHitFeedBack_Implementation() { }
+void AProjectileBase::OnHitFeedBack_Implementation()
+{
+	
+}
+
 void AProjectileBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
@@ -49,30 +51,10 @@ void AProjectileBase::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActo
 		if (OtherActor && OtherActor != MyOwner)
 		{
 			UGameplayStatics::ApplyDamage(OtherActor, ProJDmg, MyOwner->GetInstigatorController(),
-				this,ProjDmgType());
+				this,UDamageType::StaticClass());
 		}
 	}
 
 	Destroy();
-}
-
-TSubclassOf<UDamageType> AProjectileBase::ProjDmgType()
-{
-	switch (ProjectileType)
-	{
-	case EMyEnum::NormalProJ:
-		return UDamageType::StaticClass();
-		
-	case EMyEnum::FireProJ:
-		return UFireDmageType::StaticClass();
-		
-	case EMyEnum::IceProJ:
-		return UIceDamageType::StaticClass();
-		
-	case EMyEnum::ElecProJ:
-		return UElecDamageType::StaticClass();
-	}
-
-	return UDamageType::StaticClass();
 }
 

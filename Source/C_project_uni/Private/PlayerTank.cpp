@@ -4,17 +4,13 @@
 #include "PlayerTank.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
-#include "Components/SphereComponent.h"
 
 APlayerTank::APlayerTank()
 {
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
-	SpringArm->SetupAttachment(RootComponent);
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+	SpringArm->SetupAttachment(RootComponent);
 	Camera->SetupAttachment(SpringArm);
-	
-	PickUpRange = CreateDefaultSubobject<USphereComponent>(TEXT("PickUpRange"));
-	PickUpRange->SetupAttachment(RootComponent);
 }
 
 void APlayerTank::BeginPlay()
@@ -46,6 +42,5 @@ void APlayerTank::SetPlayerEnabled(bool Enabled)
 	APlayerController* PlayerContoller = Cast<APlayerController>(GetController());
 }
 
-void APlayerTank::WeaponStatChange_Implementation(EMyEnum ProJType) {}
 void APlayerTank::PlayerMoveFeedBack_Implementation() {}
 void APlayerTank::PlayerStopMoveFeedBack_Implementation() {}

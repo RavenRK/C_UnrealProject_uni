@@ -40,7 +40,7 @@ void AEnemyTower::FireProJ()
 		
 		//spawn VFX
 		//play sound
-		Fire(DmgMultiplier);
+		Fire();
 
 	}
 }
