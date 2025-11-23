@@ -7,6 +7,7 @@
 #include "EnemyTower.h"
 #include "PlayerTank.h"
 #include "HealthComp.h"
+#include "BossFightGameInstance.h"
 
 ABossFightGameMode::ABossFightGameMode()
 {
@@ -16,6 +17,11 @@ ABossFightGameMode::ABossFightGameMode()
 void ABossFightGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	
+	GameInstance = GetGameInstance();
+	
+	if (GameInstance)
+		BossFightGameInstance =Cast<UBossFightGameInstance>(GameInstance);
 	
 	GetAllEnemys();
 	GetPlayer();
@@ -40,17 +46,8 @@ void ABossFightGameMode::GetAllEnemys()
 	}
 	
 }
-void ABossFightGameMode::OnEnemyDead(AActor* DeadActor)
-{
-	EnemyCount--;
-	if (EnemyCount <= 0)
-	{
-		GEngine->AddOnScreenDebugMessage(4, 5.f, FColor::Green, TEXT("win"));
-		GameOverString = "Victory";
-	}
-}
-#pragma endregion EnemyHandling
 
+#pragma endregion EnemyHandling
 #pragma region PlayerSetup
 void ABossFightGameMode::GetPlayer()
 {
@@ -64,20 +61,35 @@ void ABossFightGameMode::GetPlayer()
 		}
 	}
 }
-
 #pragma endregion PlayerSetup
-
 
 void ABossFightGameMode::OnPlayerDead(AActor* DeadActor)
 {
-	GameOverString = "Defeat";
-	GetWorldTimerManager().SetTimer(GameOverTimer, this, &ABossFightGameMode::OnGameOverTimerTimeOut, GameOverDelay, false );
-
-	//player dead restart level or something ?
-	//maybe new player at check piont ?
+	isVictory = true;
+	GetWorldTimerManager().SetTimer(GameOverTimer, this, &ABossFightGameMode::OnGameOver,
+		GameOverDelay, false );
 }
+void ABossFightGameMode::OnEnemyDead(AActor* DeadActor)
+{
+	EnemyCount--;
+	if (EnemyCount <= 0)
+	{
+		isVictory = false;
+		GetWorldTimerManager().SetTimer(GameOverTimer, this, &ABossFightGameMode::OnGameOver,
+			GameOverDelay, false );
+	}
+}
+
+void ABossFightGameMode::OnGameOver()
+{
+	if (isVictory)
+		BossFightGameInstance->RestartCurrentLevel();
+	else 
+		BossFightGameInstance->LoadNextLevel();
+}
+
+
 void ABossFightGameMode::OnGameOverTimerTimeOut()
 {
-	FString CurrentLevelName = UGameplayStatics::GetCurrentLevelName(this);
-	UGameplayStatics::OpenLevel(this, *CurrentLevelName);
+
 }

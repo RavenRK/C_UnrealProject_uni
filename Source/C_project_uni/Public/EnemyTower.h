@@ -20,8 +20,7 @@ public:
 	
 	//90% sure I don't need this
 	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-protected:
+	
 	UPROPERTY(EditAnywhere, Category = "Enemy Stats")
 	float FireRate = .5f;
 	UPROPERTY(EditAnywhere, Category = "Enemy Stats")
@@ -29,6 +28,7 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Enemy Stats")
 	float TurnRate = 0.01f;
 	
+protected:
 	UPROPERTY(VisibleAnywhere)
 	bool bTowerCanRoate = false;
 	UPROPERTY(VisibleAnywhere)
@@ -51,8 +51,6 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* AttackSphereRange;
-
-
 	
 	virtual void PostInitializeComponents() override;
 	

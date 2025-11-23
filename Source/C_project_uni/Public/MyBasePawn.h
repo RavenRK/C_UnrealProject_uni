@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "MyBasePawn.generated.h"
 
+class UStatusEffects;
 class UHealthComp;
 class UBoxComponent;
 class AProjectileBase;
@@ -27,29 +28,30 @@ public:
 	
 	UPROPERTY(EditAnywhere)
 	UHealthComp* HealthCompo;
-
+	
 	UPROPERTY()
 	APlayerController* PlayerController;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float ProJSpread = 6;
 	
 	virtual void RotateTo(FVector Target);
-	virtual void Fire(); 
+	virtual void Fire(float Dmg); 
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats | Attack")
+	float DmgMultiplier = 15;
+	
 	UFUNCTION()
 	virtual void OnPawnDestruction(AActor* DeadActor);
 	
 	UFUNCTION(BlueprintNativeEvent)
 	void DeathFeedBack();
 	
-protected:
-	AMyBasePawn();
-	
-	//Tsubclassof cuz we cant accsess the Bp in here
+	//Tsubclassof cuz bp
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AProjectileBase> ProJBase;
-
+protected:
+	AMyBasePawn();
 	virtual void BeginPlay() override;
 	
 private:

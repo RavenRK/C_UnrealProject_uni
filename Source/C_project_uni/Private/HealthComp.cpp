@@ -20,13 +20,17 @@ void UHealthComp::BeginPlay()
 void UHealthComp::OnDmgTaken(AActor* DamagedActor, float Damage, const class UDamageType* DamageType,
 	class AController* InstigatedBy, AActor* DamageCauser)
 {
-	CurrentHealth -= Damage;
-	if (CurrentHealth <= 0) {Death();}
+	TakeDmg(Damage);
 }
 
 void UHealthComp::Death()
 {
-	
 	OnDeath.Broadcast(GetOwner());
 	//GetOwner()->Destroy();
+}
+
+void UHealthComp::TakeDmg(float Dmg)
+{
+	CurrentHealth -= Dmg;
+	if (CurrentHealth <= 0) {Death();}
 }

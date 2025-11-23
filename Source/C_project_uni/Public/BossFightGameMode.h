@@ -7,6 +7,7 @@
 #include "BossFightGameMode.generated.h"
 
 class APlayerTank;
+class UBossFightGameInstance;
 
 UCLASS()
 class C_PROJECT_UNI_API ABossFightGameMode : public AGameModeBase
@@ -23,8 +24,6 @@ protected:
 	
 	bool isGameOver = false;
 	bool isVictory = false;
-
-	FString GameOverString;
 	
 	UFUNCTION()
 	void OnPlayerDead(AActor* DeadActor);
@@ -41,6 +40,11 @@ private:
 	UPROPERTY()
 	FTimerHandle GameOverTimer;
 	
+	UPROPERTY()
+	UGameInstance* GameInstance;
+	UPROPERTY()
+	UBossFightGameInstance* BossFightGameInstance;
+	
 	/* get all enemys in would
 	 * get number of enemys
 	 * bing on dead EVENT ( so we know when an enemy is dead )
@@ -50,4 +54,6 @@ private:
 	 * bing player dead EVENT
 	 */
 	void GetPlayer();
+
+	void OnGameOver();
 };
