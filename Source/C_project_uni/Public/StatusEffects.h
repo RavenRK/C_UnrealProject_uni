@@ -60,7 +60,9 @@ public:
 	float IceTimerDuration = 4;
 	
 	UFUNCTION(BlueprintNativeEvent)
-	void IceFeedBack();
+	void IceFeedBackStart();
+	UFUNCTION(BlueprintNativeEvent)
+	void IceFeedBackEnd();
 	UFUNCTION()
 	void IceEffect();
 	
@@ -92,7 +94,9 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void AOEDmgFeedBack();
 	UFUNCTION(BlueprintNativeEvent)
-	void ElectricFeedBack();
+	void ElectricFeedBackStart();
+	UFUNCTION(BlueprintNativeEvent)
+	void ElectricFeedBackEnd();
 	UFUNCTION()
 	void ElectricEffect();
 

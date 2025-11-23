@@ -13,8 +13,12 @@ class C_PROJECT_UNI_API AExplodeAOE : public AActor
 
 public:
 	AExplodeAOE();
-	virtual void Tick(float DeltaTime) override;
 
+	UPROPERTY(EditAnywhere)
+	float Dmg;
+	
+	UFUNCTION(BlueprintNativeEvent)
+	void AOEFeedBack();
 protected:
 	virtual void BeginPlay() override;
 

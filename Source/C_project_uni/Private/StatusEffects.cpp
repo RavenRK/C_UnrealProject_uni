@@ -46,6 +46,8 @@ void UStatusEffects::BurnDmgStart()
 	{
 		GEngine->AddOnScreenDebugMessage(-1,5.f,FColor::Green
 	,FString::Printf(TEXT("Boom")));
+
+		ExplodeFeedBack();
 	}
 }
 void UStatusEffects::BurnDmgEnd()
@@ -61,20 +63,19 @@ void UStatusEffects::FireEffect()
 	
 	GetWorld()->GetTimerManager().SetTimer
 	(BurnTimerEnd, this, &UStatusEffects::BurnDmgEnd, BurnDuration, false);
+	
 	FireFeedBack();
 }
 
 void UStatusEffects::IceEffect()
 {
 	ClassCheck();
-
 	OriginalStatsIce();
-	
 	IceEffectStat();
 	
 	GetWorld()->GetTimerManager().SetTimer
 	(IceTimer, this, &UStatusEffects::OriginalStatsIce, IceTimerDuration, false);
-	ElectricFeedBack();
+	ElectricFeedBackStart();
 }
 
 void UStatusEffects::OriginalStatsIce()
@@ -90,21 +91,23 @@ void UStatusEffects::OriginalStatsIce()
 		OriginalEnemyFireRate = EnemyTower->FireRate;
 		OriginalEnemyTurnRate = EnemyTower->TurnRate;
 	}
+	IceFeedBackEnd();
 }
 
 void UStatusEffects::IceEffectStat()
 {
-	if (bEnemyOrPlayer)
+	if (PlayerTank)
 	{
 		PlayerTank->MoveSpeed /= MovementSlowPercentage;
 		PlayerTank->RotateSpeed /= RotateSlowPercentage;
 		PlayerTank->AttackSpeed /= AttackSpeedSlowPercentage;
 	}
-	else
+	else if (EnemyTower)
 	{
 		EnemyTower->FireRate /= AttackSpeedSlowPercentage;
 		EnemyTower->TurnRate = 0.05;
 	}
+	IceFeedBackStart();
 }
 
 void UStatusEffects::ClassCheck()
@@ -127,19 +130,20 @@ void UStatusEffects::ClassCheck()
 void UStatusEffects::ElectricEffect()
 {
 	//CC timer
-
 	//spawn dmg area
-
-	IceFeedBack();
+	
+	ElectricFeedBackStart();
 }
 
-
-// Player Feed Back
+//AMO
 void UStatusEffects::ExplodeFeedBack_Implementation() {}
 void UStatusEffects::AOEDmgFeedBack_Implementation() {}
-
+//Fire
 void UStatusEffects::FireFeedBack_Implementation() {}
 void UStatusEffects::FireEnd_Implementation() {}
-
-void UStatusEffects::IceFeedBack_Implementation() {}
-void UStatusEffects::ElectricFeedBack_Implementation() {}
+//Ice
+void UStatusEffects::IceFeedBackStart_Implementation() {}
+void UStatusEffects::IceFeedBackEnd_Implementation() {}
+//elec
+void UStatusEffects::ElectricFeedBackStart_Implementation() {}
+void UStatusEffects::ElectricFeedBackEnd_Implementation() {}

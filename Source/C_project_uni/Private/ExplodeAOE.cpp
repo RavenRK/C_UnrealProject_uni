@@ -4,23 +4,19 @@
 #include "ExplodeAOE.h"
 
 
-// Sets default values
 AExplodeAOE::AExplodeAOE()
 {
-	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
 }
 
-// Called when the game starts or when spawned
 void AExplodeAOE::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	//get tsubclassof myBasePawn and Call on Dmg to all of them
+	//maybe get status effect and see call elec effect
+	AOEFeedBack();
 }
 
-// Called every frame
-void AExplodeAOE::Tick(float DeltaTime)
+void AExplodeAOE::AOEFeedBack_Implementation()
 {
-	Super::Tick(DeltaTime);
+	//spawn VFX
 }
-
