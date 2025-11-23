@@ -20,13 +20,12 @@ public:
 	
 	//90% sure I don't need this
 	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-protected:
-	UPROPERTY(EditAnywhere, Category = "Enemy Stats")
+	
+	UPROPERTY(EditAnywhere,BlueprintReadWrite ,Category = "Enemy Stats")
 	float FireRate = .5f;
-	UPROPERTY(EditAnywhere, Category = "Enemy Stats")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite , Category = "Enemy Stats")
 	float AttackRange = 700;
-	UPROPERTY(EditAnywhere, Category = "Enemy Stats")
+	UPROPERTY(EditAnywhere,BlueprintReadWrite , Category = "Enemy Stats")
 	float TurnRate = 0.01f;
 	
 	UPROPERTY(VisibleAnywhere)
@@ -34,6 +33,7 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	bool bCanFire = false;
 	
+protected:
 	UPROPERTY()
 	FTimerHandle FireTimerHandle;
 	UPROPERTY()
@@ -51,8 +51,6 @@ protected:
 private:
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* AttackSphereRange;
-
-
 	
 	virtual void PostInitializeComponents() override;
 	

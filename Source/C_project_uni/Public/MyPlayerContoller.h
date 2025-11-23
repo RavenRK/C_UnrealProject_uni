@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "PlayerTank.h"
 #include "GameFramework/PlayerController.h"
 #include "MyPlayerContoller.generated.h"
 
@@ -26,12 +27,18 @@ public:
 	UInputAction* AttackAction = nullptr;
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Input Action")
 	UInputAction* RotateAction = nullptr;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Input|Input Action")
+	UInputAction* PickUpAction = nullptr;
 	
 protected:
-	UPROPERTY(EditAnywhere)
-	float MoveSpeed = 300;
-	UPROPERTY(EditAnywhere)
-	float RotateSpeed = 75;
+
+	UPROPERTY()
+	FTimerHandle AttackSpeedTimer;
+	UPROPERTY()
+	FTimerHandle FirstShotCDTimer;
+	bool bCanAttack = true;
+	void Attack();
+	void FirstShotCD();
 	
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
@@ -47,10 +54,18 @@ protected:
 	void HandleRotate(const FInputActionValue& IAValue);
 	void HandleAttack();
 	void MoveCompleted();
-	
+	void EndAttackTimer();
+	void PickUp();
+
+
 	virtual void OnPossess(APawn* InPawn) override;
 	//virtual void OnUnPossess() override;
-
+	
+	UPROPERTY()
+	TArray<AActor*> Overlaps;
+	
+	UPROPERTY()
+	EMyEnum StoredProjectileType;
 private:
 	UPROPERTY() UEnhancedInputComponent* EnhancedInputComponent = nullptr;
 	UPROPERTY() APlayerTank* PlayerTank = nullptr;
