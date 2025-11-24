@@ -43,9 +43,13 @@ public:
 	
 	UFUNCTION()
 	virtual void OnPawnDestruction(AActor* DeadActor);
-	
+	UFUNCTION()
+	virtual void OnPawnHitEffect();
+		
 	UFUNCTION(BlueprintNativeEvent)
 	void DeathFeedBack();
+	UFUNCTION(BlueprintNativeEvent)
+	void HitFeedBack();
 	
 	//Tsubclassof cuz bp
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "Stats | Attack")

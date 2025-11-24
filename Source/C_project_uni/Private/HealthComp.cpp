@@ -13,7 +13,6 @@ void UHealthComp::BeginPlay()
 	Super::BeginPlay();
 
 	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UHealthComp::OnDmgTaken);
-	
 }
 
 // this get called when the owner gets hit by something ( player / enemy )
@@ -21,6 +20,7 @@ void UHealthComp::OnDmgTaken(AActor* DamagedActor, float Damage, const class UDa
 	class AController* InstigatedBy, AActor* DamageCauser)
 {
 	TakeDmg(Damage);
+	OnHit.Execute();
 }
 
 void UHealthComp::Death()
@@ -37,6 +37,5 @@ void UHealthComp::TakeDmg(float Dmg)
 	if (CurrentHealth <= 0)
 	{
 		Death();
-
 	}
 }

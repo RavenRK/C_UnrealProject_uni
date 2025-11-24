@@ -33,6 +33,7 @@ void AMyBasePawn::BeginPlay()
 	Super::BeginPlay();
 
 	HealthCompo->OnDeath.AddDynamic(this, &AMyBasePawn::OnPawnDestruction);
+	HealthCompo->OnHit.BindDynamic(this, &AMyBasePawn::OnPawnHitEffect);
 }
 
 void AMyBasePawn::RotateTo(FVector Target)
@@ -74,6 +75,8 @@ void AMyBasePawn::OnPawnDestruction(AActor* DeadActor)
 	DeathFeedBack();
 }
 
+void AMyBasePawn::OnPawnHitEffect() {}
+void AMyBasePawn::HitFeedBack_Implementation() {}
 void AMyBasePawn::DeathFeedBack_Implementation() {}
 
 

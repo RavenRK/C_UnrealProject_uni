@@ -24,11 +24,19 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void PlayerStopMoveFeedBack();
 	
+	UFUNCTION(BlueprintNativeEvent)
+	void PlayerHitFeedBack();
+	
 	UPROPERTY(VisibleAnywhere)
 	USphereComponent* PickUpRange;
 	
 	UFUNCTION(BlueprintNativeEvent)
 	void WeaponStatChange(EMyEnum ProJType);
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UCameraShakeBase> HitCameraShakeClass;
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<UCameraShakeBase> DeathCameraShakeClass;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats | Movement")
 	float MoveSpeed = 300;
@@ -38,14 +46,14 @@ public:
 	float AttackSpeed = .5f;
 	
 	void SetPlayerEnabled(bool Enabled);
+	virtual void OnPawnHitEffect() override;
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual void OnPawnDestruction(AActor* DeadActor) override;
-
-
 
 private:
 	UPROPERTY(VisibleAnywhere)
@@ -54,5 +62,6 @@ private:
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Camera;
 
-
+	UPROPERTY()
+	APlayerController* PC;
 };
