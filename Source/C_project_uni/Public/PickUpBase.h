@@ -19,7 +19,7 @@ class C_PROJECT_UNI_API APickUpBase : public AActor
 public:
 	APickUpBase();
 	
-	UPROPERTY(EditAnywhere,BlueprintReadOnly , Category = "Pickup")
+	UPROPERTY(EditAnywhere, BlueprintReadOnly , Category = "Pickup")
 	TSubclassOf<AProjectileBase> ProJRef;
 	
 	UPROPERTY()
@@ -29,7 +29,7 @@ public:
 	void ChangeVFX(EMyEnum ProJType);
 	
 	void ChangePickUps(TSubclassOf<AProjectileBase> NewProJRef);
-
+	void BeginPlay() override;
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly)
 	USphereComponent* CollisionSphere;

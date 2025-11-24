@@ -30,7 +30,7 @@ public:
 	
 protected:
 	UPROPERTY(VisibleAnywhere)
-	bool bTowerCanRoate = false;
+	bool bTowerCanRotate = false;
 	UPROPERTY(VisibleAnywhere)
 	bool bCanFire = false;
 	

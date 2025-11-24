@@ -14,7 +14,7 @@ class C_PROJECT_UNI_API UBossFightGameInstance : public UGameInstance
 public:
 
 	UPROPERTY(EditAnywhere)
-	int32 MaxLevelIndex = 3;
+	int32 MaxLevelIndex = 4;
 
 	UPROPERTY(VisibleAnywhere)
 	int32 CurrentLevelIndex = 1;

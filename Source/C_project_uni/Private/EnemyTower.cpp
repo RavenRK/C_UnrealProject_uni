@@ -47,7 +47,7 @@ void AEnemyTower::FireProJ()
 
 void AEnemyTower::RotateToPlayer()
 {
-	if (PlayerTank && bTowerCanRoate)
+	if (PlayerTank && bTowerCanRotate)
 		RotateTo(PlayerTank->GetActorLocation());
 }
 
@@ -68,7 +68,7 @@ void AEnemyTower::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent,
 	if (!PlayerTank) return;
 	if (!PlayerTank->bisAlive) return;
 	
-	bTowerCanRoate = true;
+	bTowerCanRotate = true;
 	bCanFire = true;
 
 	GetWorldTimerManager().SetTimer(FireTimerHandle, this, &AEnemyTower::FireProJ, FireRate, true);
@@ -84,7 +84,7 @@ void AEnemyTower::OnSphereEndOverlap(UPrimitiveComponent* OverlappedComponent, A
 
 void AEnemyTower::StopAttackTimer()
 {
-	bTowerCanRoate = false;
+	bTowerCanRotate = false;
 	bCanFire = false;
 	
 	GetWorld()->GetTimerManager().ClearTimer(FireTimerHandle);

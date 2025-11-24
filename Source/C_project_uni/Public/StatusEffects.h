@@ -47,14 +47,14 @@ public:
 	FTimerHandle BurnTimerStart;
 	UPROPERTY()
 	FTimerHandle BurnTimerEnd;
-	
+
 	//Ice Effect
 	UPROPERTY(EditDefaultsOnly, Category = "Effects Stats | Ice")
 	float AttackSpeedSlowPercentage;
 	UPROPERTY(EditDefaultsOnly, Category = "Effects Stats | Ice")
 	float MovementSlowPercentage = .35;
 	UPROPERTY(EditDefaultsOnly, Category = "Effects Stats | Ice")
-	float RotateSlowPercentage;
+	float RotateSlowPercentage = 0.07f;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Effects Stats | Ice")
 	float IceTimerDuration = 4;
@@ -68,8 +68,10 @@ public:
 	
 	UPROPERTY()
 	FTimerHandle IceTimer;
-	void OriginalStatsIce();
+	void IceSetUp();
+	
 	void IceEffectStat();
+	void IceEffectOverTimer();
 	
 	bool bEnemyOrPlayer;
 	
@@ -79,8 +81,6 @@ public:
 	AEnemyTower* EnemyTower;
 	UPROPERTY()
 	AActor* Owner;
-	
-	void ClassCheck();
 	
 	//Electric Effect
 	UPROPERTY(EditDefaultsOnly, Category = "Effects Stats | Electric")
@@ -112,6 +112,10 @@ private:
 	UPROPERTY()
 	UHealthComp* HealthComp;
 
+	bool bBurning;
+	bool bIceing;
+	bool bElecing;
+	
 	float OriginalMoveSpeed;
 	float OriginalRotateSpeed;
 	float OriginalAttackSpeed;

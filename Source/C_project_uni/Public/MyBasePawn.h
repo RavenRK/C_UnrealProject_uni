@@ -32,7 +32,7 @@ public:
 	UPROPERTY()
 	APlayerController* PlayerController;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "Stats | Attack")
 	float ProJSpread = 6;
 	
 	virtual void RotateTo(FVector Target);
@@ -48,7 +48,7 @@ public:
 	void DeathFeedBack();
 	
 	//Tsubclassof cuz bp
-	UPROPERTY(EditDefaultsOnly)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "Stats | Attack")
 	TSubclassOf<AProjectileBase> ProJBase;
 protected:
 	AMyBasePawn();

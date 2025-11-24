@@ -19,7 +19,6 @@ void UStatusEffects::BeginPlay()
 	GetOwner()->OnTakeAnyDamage.AddDynamic(this, &UStatusEffects::OnDmgTaken_DmgEffect);
 	HealthComp = GetOwner()->FindComponentByClass<UHealthComp>();
 	
-	ClassCheck();
 	Owner = GetOwner();
 }
 
@@ -27,19 +26,34 @@ void UStatusEffects::OnDmgTaken_DmgEffect(AActor* DamagedActor, float Damage, co
 	class AController* InstigatedBy, AActor* DamageCauser)
 {
 	if (DamageType->IsA(UFireDmageType::StaticClass()))
+	{
+		if (bBurning) {return;}
+		
 		FireEffect();
+		bBurning = true;
+	}
 	else if (DamageType->IsA(UIceDamageType::StaticClass()))
+	{
+		if (bIceing) {return;}
+		
 		IceEffect();
+		bIceing = true;
+	}
 	else if (DamageType->IsA(UElecDamageType::StaticClass()))
+	{
+		//if (bElecing) {return;}
+		
 		ElectricEffect();
+		//bElecing = true;
+	}
+
 }
 
 void UStatusEffects::BurnDmgStart()
 {
 	HealthComp->TakeDmg(BurnDmg);
 	
-	GEngine->AddOnScreenDebugMessage(-1,5.f,FColor::Green
-		,FString::Printf(TEXT("taking burn dmg %f"), HealthComp->CurrentHealth));
+	//GEngine->AddOnScreenDebugMessage(-1,5.f,FColor::Green,FString::Printf(TEXT("taking burn dmg %f"), HealthComp->CurrentHealth));
 	
 	float Value = FMath::FRandRange(100, 0.f);
 	if (Value < ExplodeChancePercentage)
@@ -54,8 +68,8 @@ void UStatusEffects::BurnDmgEnd()
 {
 	GetWorld()->GetTimerManager().ClearTimer(BurnTimerStart);
 	FireEnd();
+	bBurning = false;
 }
-
 void UStatusEffects::FireEffect()
 {
 	GetWorld()->GetTimerManager().SetTimer
@@ -69,48 +83,20 @@ void UStatusEffects::FireEffect()
 
 void UStatusEffects::IceEffect()
 {
-	ClassCheck();
-	OriginalStatsIce();
+	//is player ir enemy ?
+	//get there original stat
+	IceSetUp();
+
+	//apply ice effect
 	IceEffectStat();
+	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, TEXT("we slow"));
 	
+	//remove when timer over
 	GetWorld()->GetTimerManager().SetTimer
-	(IceTimer, this, &UStatusEffects::OriginalStatsIce, IceTimerDuration, false);
-	ElectricFeedBackStart();
+	(IceTimer, this, &UStatusEffects::IceEffectOverTimer, IceTimerDuration, false);
 }
 
-void UStatusEffects::OriginalStatsIce()
-{
-	if (PlayerTank)
-	{
-		OriginalMoveSpeed = PlayerTank->MoveSpeed;
-		OriginalRotateSpeed = PlayerTank->RotateSpeed;
-		OriginalAttackSpeed = PlayerTank->AttackSpeed;
-	}
-	else if (EnemyTower)
-	{
-		OriginalEnemyFireRate = EnemyTower->FireRate;
-		OriginalEnemyTurnRate = EnemyTower->TurnRate;
-	}
-	IceFeedBackEnd();
-}
-
-void UStatusEffects::IceEffectStat()
-{
-	if (PlayerTank)
-	{
-		PlayerTank->MoveSpeed /= MovementSlowPercentage;
-		PlayerTank->RotateSpeed /= RotateSlowPercentage;
-		PlayerTank->AttackSpeed /= AttackSpeedSlowPercentage;
-	}
-	else if (EnemyTower)
-	{
-		EnemyTower->FireRate /= AttackSpeedSlowPercentage;
-		EnemyTower->TurnRate = 0.05;
-	}
-	IceFeedBackStart();
-}
-
-void UStatusEffects::ClassCheck()
+void UStatusEffects::IceSetUp()
 {
 	Owner = GetOwner();
 
@@ -124,6 +110,57 @@ void UStatusEffects::ClassCheck()
 	else if (Owner->IsA(APlayerTank::StaticClass()))
 	{
 		PlayerTank = Cast<APlayerTank>(Owner);
+	}
+	
+	if (PlayerTank)
+	{
+		OriginalMoveSpeed = PlayerTank->MoveSpeed;
+		OriginalRotateSpeed = PlayerTank->RotateSpeed;
+		OriginalAttackSpeed = PlayerTank->AttackSpeed;
+	}
+	else if (EnemyTower)
+	{
+		OriginalEnemyFireRate = EnemyTower->FireRate;
+		OriginalEnemyTurnRate = EnemyTower->TurnRate;
+	}
+}
+void UStatusEffects::IceEffectStat()
+{
+	//set them to slow speed
+	if (PlayerTank)
+	{
+		PlayerTank->MoveSpeed *= MovementSlowPercentage;
+		PlayerTank->RotateSpeed *= RotateSlowPercentage;
+		PlayerTank->AttackSpeed *= AttackSpeedSlowPercentage;
+	}
+	else if (EnemyTower)
+	{
+		EnemyTower->FireRate *= AttackSpeedSlowPercentage;
+		EnemyTower->TurnRate = RotateSlowPercentage;
+	}
+	IceFeedBackStart();
+}
+
+void UStatusEffects::IceEffectOverTimer()
+{
+	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, TEXT("normal ?"));
+
+	// we ice effectsing ?
+	if (bIceing)
+	{
+		//set them to normal speed
+		if (PlayerTank)
+		{
+			PlayerTank->MoveSpeed = OriginalMoveSpeed;
+			PlayerTank->RotateSpeed = OriginalRotateSpeed;
+			PlayerTank->AttackSpeed = OriginalAttackSpeed;
+		}
+		else if (EnemyTower)
+		{
+			EnemyTower->FireRate = OriginalEnemyFireRate;
+			EnemyTower->TurnRate = OriginalEnemyTurnRate;
+		}
+		bIceing = false;
 	}
 }
 

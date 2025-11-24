@@ -2,13 +2,20 @@
 #include "Components/SphereComponent.h"
 #include "ProjectileBase.h"
 
+
+
 APickUpBase::APickUpBase()
 {
 	PrimaryActorTick.bCanEverTick = false;
 	CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("BoxColl"));
 	SetRootComponent(RootComponent);
 }
-void APickUpBase::ChangeVFX_Implementation(EMyEnum ProJType) {}
+
+void APickUpBase::BeginPlay()
+{
+	Super::BeginPlay();
+	ChangePickUps(ProJRef);
+}
 
 void APickUpBase::ChangePickUps(TSubclassOf<AProjectileBase> NewProJRef)
 {
@@ -18,5 +25,4 @@ void APickUpBase::ChangePickUps(TSubclassOf<AProjectileBase> NewProJRef)
 	ChangeVFX(StoredProjectileType);
 }
 
-
-
+void APickUpBase::ChangeVFX_Implementation(EMyEnum ProJType) {}
