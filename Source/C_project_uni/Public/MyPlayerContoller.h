@@ -71,5 +71,5 @@ private:
 	UPROPERTY() APlayerTank* PlayerTank = nullptr;
 	UPROPERTY() UEnhancedInputLocalPlayerSubsystem* InputSubsystem;
 
-
+	void PlayerWeaponChnage(EMyEnum ProjectileType);
  };

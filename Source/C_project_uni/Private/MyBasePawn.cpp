@@ -5,7 +5,6 @@
 #include "Components/BoxComponent.h"
 #include "ProjectileBase.h"
 #include "HealthComp.h"
-#include "StatusEffects.h"
 
 AMyBasePawn::AMyBasePawn()
 {
@@ -57,7 +56,7 @@ void AMyBasePawn::Fire(float Dmg)
 	FVector SpawnLocation = ProJSpawnPoint->GetComponentLocation();
 	FRotator SpawnRotation = ProJSpawnPoint->GetComponentRotation();
 
-	float YawSpread   = FMath::RandRange(-ProJSpread,ProJSpread);
+	float YawSpread   = FMath::RandRange(-ProJSpreadAngle,ProJSpreadAngle);
 	SpawnRotation.Yaw   += YawSpread;
 
 	AProjectileBase* Projectile = GetWorld()->SpawnActor<AProjectileBase>(ProJBase,SpawnLocation,SpawnRotation);

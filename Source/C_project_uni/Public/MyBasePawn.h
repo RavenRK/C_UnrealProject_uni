@@ -33,7 +33,7 @@ public:
 	APlayerController* PlayerController;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite,Category = "Stats | Attack")
-	float ProJSpread = 6;
+	float ProJSpreadAngle = 6;
 	
 	virtual void RotateTo(FVector Target);
 	virtual void Fire(float Dmg); 
@@ -54,11 +54,10 @@ protected:
 	AMyBasePawn();
 	virtual void BeginPlay() override;
 	
-private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(BlueprintReadWrite)
 	UStaticMeshComponent* BaseMesh;
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(BlueprintReadWrite)
 	UStaticMeshComponent* TurretMesh;
-
+	
 	
 };

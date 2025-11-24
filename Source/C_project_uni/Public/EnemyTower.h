@@ -21,11 +21,11 @@ public:
 	//90% sure I don't need this
 	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	
-	UPROPERTY(EditAnywhere, Category = "Enemy Stats")
+	UPROPERTY(EditAnywhere, Category = "Stats")
 	float FireRate = .5f;
-	UPROPERTY(EditAnywhere, Category = "Enemy Stats")
+	UPROPERTY(EditAnywhere, Category = "Stats")
 	float AttackRange = 700;
-	UPROPERTY(EditAnywhere, Category = "Enemy Stats")
+	UPROPERTY(EditAnywhere, Category = "Stats")
 	float TurnRate = 0.01f;
 	
 protected:

@@ -16,8 +16,7 @@
 void AMyPlayerContoller::BeginPlay()
 {
 	Super::BeginPlay();
-	StoredProjectileType = Cast<AProjectileBase>(PlayerTank->ProJBase->GetDefaultObject())->ProjectileType;
-	PlayerTank->WeaponStatChange(StoredProjectileType);
+	PlayerWeaponChnage(StoredProjectileType);
 }
 
 void AMyPlayerContoller::Tick(float DeltaSeconds)
@@ -119,9 +118,16 @@ void AMyPlayerContoller::PickUp()
 			TSubclassOf<AProjectileBase> LastProJRef = PlayerTank->ProJBase;
 			PlayerTank->ProJBase = Pickup->ProJRef;
 			Pickup->ChangePickUps(LastProJRef);
-			PlayerTank->WeaponStatChange(StoredProjectileType);
+
+			PlayerWeaponChnage(StoredProjectileType);
 		}
 	}
+}
+
+void AMyPlayerContoller::PlayerWeaponChnage(EMyEnum ProjectileType)
+{
+	ProjectileType = Cast<AProjectileBase>(PlayerTank->ProJBase->GetDefaultObject())->ProjectileType;
+	PlayerTank->WeaponStatChange(ProjectileType);
 }
 
 void AMyPlayerContoller::FirstShotCD()	{bCanAttack = true; }
