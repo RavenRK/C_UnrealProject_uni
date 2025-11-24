@@ -26,8 +26,6 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Health")
 	float CurrentHealth;
 protected:
-		
-
 	
 	virtual void BeginPlay() override;
 	
@@ -37,6 +35,6 @@ protected:
 		class AController* InstigatedBy, AActor* DamageCauser );
 
 	virtual void Death();
-
-
+	bool bIsDead = false;
+	
 };

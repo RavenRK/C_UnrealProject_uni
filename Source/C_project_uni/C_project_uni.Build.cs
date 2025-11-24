@@ -14,7 +14,8 @@ public class C_project_uni : ModuleRules
 			"CoreUObject",
 			"Engine",
 			"InputCore",
-			"EnhancedInput" 
+			"EnhancedInput",
+			"UMG"
 			
 		});
 

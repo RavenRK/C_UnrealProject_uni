@@ -25,6 +25,8 @@ void UHealthComp::OnDmgTaken(AActor* DamagedActor, float Damage, const class UDa
 
 void UHealthComp::Death()
 {
+	if (bIsDead) {return;}
+	bIsDead = true;
 	OnDeath.Broadcast(GetOwner());
 	//GetOwner()->Destroy();
 }
@@ -32,5 +34,9 @@ void UHealthComp::Death()
 void UHealthComp::TakeDmg(float Dmg)
 {
 	CurrentHealth -= Dmg;
-	if (CurrentHealth <= 0) {Death();}
+	if (CurrentHealth <= 0)
+	{
+		Death();
+
+	}
 }

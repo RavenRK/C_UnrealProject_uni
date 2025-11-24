@@ -36,14 +36,15 @@ public:
 	float RotateSpeed = 75;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Stats | Attack")
 	float AttackSpeed = .5f;
-		
+	
+	void SetPlayerEnabled(bool Enabled);
 protected:
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	virtual void OnPawnDestruction(AActor* DeadActor) override;
-	void SetPlayerEnabled(bool Enabled);
+
 
 
 private:

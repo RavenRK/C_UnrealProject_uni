@@ -20,6 +20,7 @@ APlayerTank::APlayerTank()
 void APlayerTank::BeginPlay()
 {
 	Super::BeginPlay();
+	SetPlayerEnabled(false);
 }
 
 void APlayerTank::Tick(float DeltaTime)
@@ -38,12 +39,13 @@ void APlayerTank::OnPawnDestruction(AActor* DeadActor)
 	SetActorHiddenInGame(true);
 	SetActorTickEnabled(false);
 	SetPlayerEnabled(false);
-	bisAlive = false;
+
 }
 
 void APlayerTank::SetPlayerEnabled(bool Enabled)
 {
-	APlayerController* PlayerContoller = Cast<APlayerController>(GetController());
+	bisAlive = Enabled;
+	//APlayerController* PlayerContoller = Cast<APlayerController>(GetController());
 }
 
 void APlayerTank::WeaponStatChange_Implementation(EMyEnum ProJType) {}

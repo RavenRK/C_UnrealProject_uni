@@ -22,7 +22,8 @@ public:
 	void LoadNextLevel();
 	void RestartCurrentLevel();
 	void RestartGame();
-	
+
+	int PlayerDeathCounter = 0;
 private:
 	void ChangeLevel(int32 Index);
 };
