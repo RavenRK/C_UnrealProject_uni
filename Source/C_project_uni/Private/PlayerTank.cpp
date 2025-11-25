@@ -51,7 +51,7 @@ void APlayerTank::SetPlayerEnabled(bool Enabled) { bisAlive = Enabled; }
 void APlayerTank::OnPawnHitEffect()
 {
 	Super::OnPawnHitEffect();
-	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, TEXT("we hit"));
+	//GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, TEXT("we hit"));
 	HitFeedBack();
 	
 	if (PC ) //camera shake

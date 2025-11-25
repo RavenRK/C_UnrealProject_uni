@@ -17,6 +17,8 @@ void UBossFightGameInstance::ChangeLevel(int32 Index)
 
 void UBossFightGameInstance::LoadNextLevel()
 {
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("here"));
+
 	if (CurrentLevelIndex < MaxLevelIndex)
 		ChangeLevel(CurrentLevelIndex + 1);
 	else
@@ -25,6 +27,7 @@ void UBossFightGameInstance::LoadNextLevel()
 
 void UBossFightGameInstance::RestartCurrentLevel()
 {
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("restart level"));
 	ChangeLevel(CurrentLevelIndex);
 }
 

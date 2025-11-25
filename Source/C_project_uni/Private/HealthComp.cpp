@@ -19,8 +19,8 @@ void UHealthComp::BeginPlay()
 void UHealthComp::OnDmgTaken(AActor* DamagedActor, float Damage, const class UDamageType* DamageType,
 	class AController* InstigatedBy, AActor* DamageCauser)
 {
-	TakeDmg(Damage);
 	OnHit.Execute();
+	TakeDmg(Damage);
 }
 
 void UHealthComp::Death()

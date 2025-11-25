@@ -58,8 +58,7 @@ void UStatusEffects::BurnDmgStart()
 	float Value = FMath::FRandRange(100, 0.f);
 	if (Value < ExplodeChancePercentage)
 	{
-		GEngine->AddOnScreenDebugMessage(-1,5.f,FColor::Green
-	,FString::Printf(TEXT("Boom")));
+		//GEngine->AddOnScreenDebugMessage(-1,5.f,FColor::Green,FString::Printf(TEXT("Boom")));
 
 		ExplodeFeedBack();
 	}
@@ -89,7 +88,7 @@ void UStatusEffects::IceEffect()
 
 	//apply ice effect
 	IceEffectStat();
-	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, TEXT("we slow"));
+	//GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, TEXT("we slow"));
 	
 	//remove when timer over
 	GetWorld()->GetTimerManager().SetTimer
@@ -143,7 +142,7 @@ void UStatusEffects::IceEffectStat()
 
 void UStatusEffects::IceEffectOverTimer()
 {
-	GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, TEXT("normal ?"));
+	//GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Green, TEXT("normal ?"));
 
 	// we ice effectsing ?
 	if (bIceing)

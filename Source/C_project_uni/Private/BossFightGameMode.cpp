@@ -107,7 +107,7 @@ void ABossFightGameMode::GetSetPlayer()
 
 void ABossFightGameMode::OnPlayerDead(AActor* DeadActor)
 {
-	isVictory = true;
+	isVictory = false;
 		ScreenMsgWidget->MsgTextBlock->SetVisibility(ESlateVisibility::Visible);
 		ScreenMsgWidget->SetOnScreenMsgText("Lose ( try again T^T )");
 	
@@ -123,7 +123,7 @@ void ABossFightGameMode::OnEnemyDead(AActor* DeadActor)
 	ScreenMsgWidget->EnemyProgressUpdate(TotalEnemyCount, EnemyCount);
 	if (EnemyCount <= 0)
 	{
-		isVictory = false;
+		isVictory = true;
 		ScreenMsgWidget->MsgTextBlock->SetVisibility(ESlateVisibility::Visible);
 		ScreenMsgWidget->SetOnScreenMsgText("Win!!!");
 		GetWorldTimerManager().SetTimer(GameOverTimer, this, &ABossFightGameMode::OnGameOver,
@@ -133,7 +133,7 @@ void ABossFightGameMode::OnEnemyDead(AActor* DeadActor)
 
 void ABossFightGameMode::OnGameOver()
 {
-	if (isVictory)
+	if (!isVictory)
 		BossFightGameInstance->RestartCurrentLevel();
 	else 
 		BossFightGameInstance->LoadNextLevel();
