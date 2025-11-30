@@ -12,7 +12,6 @@ class C_PROJECT_UNI_API UBossFightGameInstance : public UGameInstance
 	GENERATED_BODY()
 
 public:
-
 	UPROPERTY(EditAnywhere)
 	int32 MaxLevelIndex = 4;
 
@@ -24,6 +23,7 @@ public:
 	void RestartGame();
 
 	int PlayerDeathCounter = 0;
+
 private:
 	void ChangeLevel(int32 Index);
 };
